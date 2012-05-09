@@ -1,27 +1,29 @@
-<!doctype html>
-<title>Notato</title>
-<h1><a href="{{url_for('index')}}">Notato</a></h1>
+{% extends "layout.html" %}
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+{% block title %}Overview{% endblock %}
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 
-{% if note_ids %}
-    Existing notes:
-    <ul>
-    {% for id in note_ids %}
-        <li>
-            <a href="{{url_for('update_note', note_id=id)}}">Note {{id}}</a>
-            <a href="{{url_for('delete_note', note_id=id)}}">[x]</a>
-        </li>
-    {% endfor %}
-    </ul>
-{% endif %}
+    {% if note_ids %}
+        Existing notes:
+        <ul>
+        {% for id in note_ids %}
+            <li>
+                <a href="{{url_for('update_note', note_id=id)}}">Note {{id}}</a>
+                <a href="{{url_for('delete_note', note_id=id)}}">[x]</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 
-<a href="{{url_for('create_note')}}">New note</a>
+    <a href="{{url_for('create_note')}}">New note</a>
+{% endblock %}
+
