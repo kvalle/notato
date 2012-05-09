@@ -9,7 +9,7 @@ from notato import app
 @app.route('/', methods=['GET', 'POST'])
 @auth.requires_auth
 def index():
-    return flask.render_template('index.html',note_ids=note.list_ids())
+    return flask.render_template('index.html', note_ids=note.list_ids())
 
 @app.route('/note/create')
 @auth.requires_auth

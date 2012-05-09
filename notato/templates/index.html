@@ -1,19 +1,8 @@
 {% extends "layout.html" %}
 
-{% block title %}Overview{% endblock %}
+{% block title %}Home{% endblock %}
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-
     {% if note_ids %}
-        Existing notes:
         <ul>
         {% for id in note_ids %}
             <li>
@@ -23,7 +12,6 @@
         {% endfor %}
         </ul>
     {% endif %}
-
     <a href="{{url_for('create_note')}}">New note</a>
 {% endblock %}
 
