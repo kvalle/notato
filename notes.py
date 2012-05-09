@@ -1,5 +1,6 @@
 from functools import wraps
-from flask import Flask, request, Response, render_template
+from flask import Flask, request, Response, render_template, abort
+import os.path
 
 app = Flask(__name__)
 
@@ -28,12 +29,32 @@ def requires_auth(f):
 @app.route('/', methods=['GET', 'POST'])
 @requires_auth
 def index():
-    with open('storage/note', 'w') as note:
-        if request.method == 'POST':
-            text = request.form['note']
-            note.write(text)
-        else:
-            text = note.read()
+    return "hello note"
+
+def note_file_name(num):
+    return 'storage/note-'+str(num)
+
+def is_note(num):
+    return os.path.isfile(note_file_name(num))
+
+def write_note(num, text):
+    with open(note_file_name(num), 'w') as note:
+        note.write(text)
+
+def read_note(num):
+    with open(note_file_name(num), 'r') as note:
+        return note.read()
+
+@app.route('/note/<int:note_id>', methods=['GET', 'POST'])
+@requires_auth
+def note(note_id):
+    if not is_note(note_id):
+        abort(404)
+    if request.method == 'POST':
+        text = request.form['note']
+        write_note(note_id, text)
+    else:
+        text = read_note(note_id)        
     return render_template('index.html', text=text)
 
 if __name__ == "__main__":
