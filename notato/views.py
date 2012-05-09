@@ -1,15 +1,11 @@
+from notato import app
 from functools import wraps
 from flask import Flask, request, Response, render_template, abort, redirect, url_for, flash
 import os.path
 
-# configuration
-DEBUG = True
-SECRET_KEY = 'dev_key'
 USERNAME = 'admin'
 PASSWORD = 'password'
-
-app = Flask(__name__)
-app.secret_key = SECRET_KEY
+STORAGE = os.path.join('notato', 'storage')
 
 def check_auth(username, password):
     """This function is called to check if a username /
@@ -34,7 +30,7 @@ def requires_auth(f):
     return decorated
 
 def note_ids():
-    return sorted(map(int, os.listdir('storage')))
+    return sorted(map(int, os.listdir(STORAGE)))
 
 @app.route('/', methods=['GET', 'POST'])
 @requires_auth
@@ -42,7 +38,7 @@ def index():
     return render_template('index.html',note_ids=note_ids())
 
 def note_file_name(note_id):
-    return os.path.join('storage',str(note_id))
+    return os.path.join(STORAGE, str(note_id))
 
 def is_note(note_id):
     return os.path.isfile(note_file_name(note_id))
@@ -84,7 +80,4 @@ def delete_note(note_id):
     os.remove(note_file_name(note_id))
     flash('Note %d deleted.' % note_id)
     return redirect(url_for('index'))
-
-if __name__ == "__main__":
-    app.run(debug=DEBUG)
 
