@@ -1,3 +1,13 @@
 <!doctype html>
 <title>Notato</title>
-<h1>Notato</title>
+<h1>Notato</h1>
+{% if notes %}
+    Existing notes:
+    <ul>
+    {% for num in notes %}
+        <li><a href="{{url_for('note', note_id=num)}}">Note {{num}}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+<a href="{{url_for('new_note')}}">New note</a>

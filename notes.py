@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import Flask, request, Response, render_template, abort
+from flask import Flask, request, Response, render_template, abort, redirect, url_for
 import os.path
 
 app = Flask(__name__)
@@ -26,13 +26,16 @@ def requires_auth(f):
         return f(*args, **kwargs)
     return decorated
 
+def note_ids():
+    return sorted(map(int, os.listdir('storage')))
+
 @app.route('/', methods=['GET', 'POST'])
 @requires_auth
 def index():
-    return render_template('index.html')
+    return render_template('index.html',notes=note_ids())
 
 def note_file_name(num):
-    return 'storage/note-'+str(num)
+    return os.path.join('storage',str(num))
 
 def is_note(num):
     return os.path.isfile(note_file_name(num))
@@ -55,7 +58,17 @@ def note(note_id):
         write_note(note_id, text)
     else:
         text = read_note(note_id)
-    return render_template('note.html', text=text)
+    return render_template('note.html', text=text, note_id=note_id)
+
+@app.route('/note/new')
+@requires_auth
+def new_note():
+    existing = note_ids()
+    next = 1
+    while next in existing:
+        next += 1
+    note_url = url_for('note', note_id=next)
+    return redirect(note_url)
 
 if __name__ == "__main__":
     app.run(debug=True)
