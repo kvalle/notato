@@ -1,9 +1,9 @@
-from notato import app
 from functools import wraps
-from flask import Flask, request, Response, render_template, abort, redirect, url_for, flash
 import os.path
-import config
+import flask
 
+from notato import app
+import config
 
 def check_auth(username, password):
     """This function is called to check if a username /
@@ -13,7 +13,7 @@ def check_auth(username, password):
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
-    return Response(
+    return flask.Response(
     'Could not verify your access level for that URL.\n'
     'You have to login with proper credentials', 401,
     {'WWW-Authenticate': 'Basic realm="Login Required"'})
@@ -21,7 +21,7 @@ def authenticate():
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        auth = request.authorization
+        auth = flask.request.authorization
         if not auth or not check_auth(auth.username, auth.password):
             return authenticate()
         return f(*args, **kwargs)
@@ -33,7 +33,7 @@ def note_ids():
 @app.route('/', methods=['GET', 'POST'])
 @requires_auth
 def index():
-    return render_template('index.html',note_ids=note_ids())
+    return flask.render_template('index.html',note_ids=note_ids())
 
 def note_file_name(note_id):
     return os.path.join(config.STORAGE, str(note_id))
@@ -54,13 +54,13 @@ def read_note(note_id):
 @app.route('/note/<int:note_id>', methods=['GET', 'POST'])
 @requires_auth
 def edit_note(note_id):
-    if request.method == 'POST':
-        text = request.form['note']
+    if flask.request.method == 'POST':
+        text = flask.request.form['note']
         write_note(note_id, text)
-        flash('Note %d was saved.' % note_id)
+        flask.flash('Note %d was saved.' % note_id)
     else:
         text = read_note(note_id)
-    return render_template('note.html', text=text, note_id=note_id)
+    return flask.render_template('note.html', text=text, note_id=note_id)
 
 @app.route('/note/new')
 @requires_auth
@@ -69,13 +69,13 @@ def new_note():
     next = 1
     while next in existing:
         next += 1
-    note_url = url_for('edit_note', note_id=next)
-    return redirect(note_url)
+    note_url = flask.url_for('edit_note', note_id=next)
+    return flask.redirect(note_url)
 
 @app.route('/note/delete/<int:note_id>')
 @requires_auth
 def delete_note(note_id):
     os.remove(note_file_name(note_id))
-    flash('Note %d deleted.' % note_id)
-    return redirect(url_for('index'))
+    flask.flash('Note %d deleted.' % note_id)
+    return flask.redirect(flask.url_for('index'))
 
