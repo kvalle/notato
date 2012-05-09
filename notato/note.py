@@ -1,3 +1,4 @@
+import os
 import os.path
 import config
 
@@ -20,3 +21,5 @@ def read(note_id):
 def _is_note(note_id):
     return os.path.isfile(_note_file_name(note_id))
 
+def delete(note_id):
+    os.remove(_note_file_name(note_id))

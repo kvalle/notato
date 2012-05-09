@@ -35,7 +35,7 @@ def update_note(note_id):
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
-    os.remove(note.note_file_name(note_id))
+    note.delete(note_id)
     flask.flash('Note %d deleted.' % note_id)
     return flask.redirect(flask.url_for('index'))
 
