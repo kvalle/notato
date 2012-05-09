@@ -1,39 +1,12 @@
-from functools import wraps
 import os.path
 import flask
 
 from notato import app
 import config
-
-def check_auth(username, password):
-    """This function is called to check if a username /
-    password combination is valid.
-    """
-    return username == config.USERNAME and password == config.PASSWORD
-
-def authenticate():
-    """Sends a 401 response that enables basic auth"""
-    return flask.Response(
-    'Could not verify your access level for that URL.\n'
-    'You have to login with proper credentials', 401,
-    {'WWW-Authenticate': 'Basic realm="Login Required"'})
-
-def requires_auth(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth = flask.request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
-            return authenticate()
-        return f(*args, **kwargs)
-    return decorated
+import auth
 
 def note_ids():
     return sorted(map(int, os.listdir(config.STORAGE)))
-
-@app.route('/', methods=['GET', 'POST'])
-@requires_auth
-def index():
-    return flask.render_template('index.html',note_ids=note_ids())
 
 def note_file_name(note_id):
     return os.path.join(config.STORAGE, str(note_id))
@@ -51,8 +24,13 @@ def read_note(note_id):
     with open(note_file_name(note_id), 'r') as note:
         return note.read()
 
+@app.route('/', methods=['GET', 'POST'])
+@auth.requires_auth
+def index():
+    return flask.render_template('index.html',note_ids=note_ids())
+
 @app.route('/note/<int:note_id>', methods=['GET', 'POST'])
-@requires_auth
+@auth.requires_auth
 def edit_note(note_id):
     if flask.request.method == 'POST':
         text = flask.request.form['note']
@@ -63,7 +41,7 @@ def edit_note(note_id):
     return flask.render_template('note.html', text=text, note_id=note_id)
 
 @app.route('/note/new')
-@requires_auth
+@auth.requires_auth
 def new_note():
     existing = note_ids()
     next = 1
@@ -73,7 +51,7 @@ def new_note():
     return flask.redirect(note_url)
 
 @app.route('/note/delete/<int:note_id>')
-@requires_auth
+@auth.requires_auth
 def delete_note(note_id):
     os.remove(note_file_name(note_id))
     flask.flash('Note %d deleted.' % note_id)
