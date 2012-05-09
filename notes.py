@@ -32,27 +32,27 @@ def note_ids():
 @app.route('/', methods=['GET', 'POST'])
 @requires_auth
 def index():
-    return render_template('index.html',notes=note_ids())
+    return render_template('index.html',note_ids=note_ids())
 
-def note_file_name(num):
-    return os.path.join('storage',str(num))
+def note_file_name(note_id):
+    return os.path.join('storage',str(note_id))
 
-def is_note(num):
-    return os.path.isfile(note_file_name(num))
+def is_note(note_id):
+    return os.path.isfile(note_file_name(note_id))
 
-def write_note(num, text):
-    with open(note_file_name(num), 'w') as note:
+def write_note(note_id, text):
+    with open(note_file_name(note_id), 'w') as note:
         note.write(text)
 
-def read_note(num):
-    if not is_note(num):
+def read_note(note_id):
+    if not is_note(note_id):
         return ""
-    with open(note_file_name(num), 'r') as note:
+    with open(note_file_name(note_id), 'r') as note:
         return note.read()
 
 @app.route('/note/<int:note_id>', methods=['GET', 'POST'])
 @requires_auth
-def note(note_id):
+def edit_note(note_id):
     if request.method == 'POST':
         text = request.form['note']
         write_note(note_id, text)
@@ -67,8 +67,15 @@ def new_note():
     next = 1
     while next in existing:
         next += 1
-    note_url = url_for('note', note_id=next)
+    note_url = url_for('edit_note', note_id=next)
     return redirect(note_url)
+
+@app.route('/note/delete/<int:note_id>')
+@requires_auth
+def delete_note(note_id):
+    os.remove(note_file_name(note_id))
+    return redirect(url_for('index'))
 
 if __name__ == "__main__":
     app.run(debug=True)
+
