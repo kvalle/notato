@@ -2,16 +2,14 @@ from notato import app
 from functools import wraps
 from flask import Flask, request, Response, render_template, abort, redirect, url_for, flash
 import os.path
+import config
 
-USERNAME = 'admin'
-PASSWORD = 'password'
-STORAGE = os.path.join('notato', 'storage')
 
 def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == USERNAME and password == PASSWORD
+    return username == config.USERNAME and password == config.PASSWORD
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
@@ -30,7 +28,7 @@ def requires_auth(f):
     return decorated
 
 def note_ids():
-    return sorted(map(int, os.listdir(STORAGE)))
+    return sorted(map(int, os.listdir(config.STORAGE)))
 
 @app.route('/', methods=['GET', 'POST'])
 @requires_auth
@@ -38,7 +36,7 @@ def index():
     return render_template('index.html',note_ids=note_ids())
 
 def note_file_name(note_id):
-    return os.path.join(STORAGE, str(note_id))
+    return os.path.join(config.STORAGE, str(note_id))
 
 def is_note(note_id):
     return os.path.isfile(note_file_name(note_id))
