@@ -2,14 +2,20 @@ from functools import wraps
 from flask import Flask, request, Response, render_template, abort, redirect, url_for, flash
 import os.path
 
+# configuration
+DEBUG = True
+SECRET_KEY = 'dev_key'
+USERNAME = 'admin'
+PASSWORD = 'password'
+
 app = Flask(__name__)
-app.secret_key = 'd\\\xab`.g\x87\xd25\xd4\xc2\x83My"T"\xe3\x89\xce\x15\xb6\x17M'
+app.secret_key = SECRET_KEY
 
 def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == 'admin' and password == 'password'
+    return username == USERNAME and password == PASSWORD
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
@@ -80,5 +86,5 @@ def delete_note(note_id):
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=DEBUG)
 
