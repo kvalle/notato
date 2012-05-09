@@ -25,10 +25,16 @@ def requires_auth(f):
         return f(*args, **kwargs)
     return decorated
 
-@app.route("/")
+@app.route('/', methods=['GET', 'POST'])
 @requires_auth
-def hello():
-    return render_template('index.html')
+def index():
+    with open('storage/note', 'w') as note:
+        if request.method == 'POST':
+            text = request.form['note']
+            note.write(text)
+        else:
+            text = note.read()
+    return render_template('index.html', text=text)
 
 if __name__ == "__main__":
     app.run(debug=True)
