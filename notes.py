@@ -42,14 +42,14 @@ def write_note(num, text):
         note.write(text)
 
 def read_note(num):
+    if not is_note(num):
+        return ""
     with open(note_file_name(num), 'r') as note:
         return note.read()
 
 @app.route('/note/<int:note_id>', methods=['GET', 'POST'])
 @requires_auth
 def note(note_id):
-    if not is_note(note_id):
-        abort(404)
     if request.method == 'POST':
         text = request.form['note']
         write_note(note_id, text)
