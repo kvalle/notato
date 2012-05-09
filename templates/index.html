@@ -1,6 +1,17 @@
 <!doctype html>
 <title>Notato</title>
-<h1>Notato</h1>
+<h1><a href="{{url_for('index')}}">Notato</a></h1>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 {% if note_ids %}
     Existing notes:
     <ul>

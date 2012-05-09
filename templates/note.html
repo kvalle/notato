@@ -1,6 +1,7 @@
 <!doctype html>
 <title>Notato</title>
-<h1>Note {{note_id}}</h1>
+<h1><a href="{{url_for('index')}}">Notato</a></h1>
+<h2>Note {{note_id}}</h2>
 <form method="POST">
     <textarea name="note">{{text}}</textarea>
     <br />
