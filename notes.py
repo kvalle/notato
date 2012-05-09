@@ -57,6 +57,7 @@ def edit_note(note_id):
     if request.method == 'POST':
         text = request.form['note']
         write_note(note_id, text)
+        flash('Note %d was saved.' % note_id)
     else:
         text = read_note(note_id)
     return render_template('note.html', text=text, note_id=note_id)
@@ -75,7 +76,7 @@ def new_note():
 @requires_auth
 def delete_note(note_id):
     os.remove(note_file_name(note_id))
-    flash('Note %d was deleted.' % note_id)
+    flash('Note %d deleted.' % note_id)
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
