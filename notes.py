@@ -29,7 +29,7 @@ def requires_auth(f):
 @app.route('/', methods=['GET', 'POST'])
 @requires_auth
 def index():
-    return "hello note"
+    return render_template('index.html')
 
 def note_file_name(num):
     return 'storage/note-'+str(num)
@@ -54,8 +54,8 @@ def note(note_id):
         text = request.form['note']
         write_note(note_id, text)
     else:
-        text = read_note(note_id)        
-    return render_template('index.html', text=text)
+        text = read_note(note_id)
+    return render_template('note.html', text=text)
 
 if __name__ == "__main__":
     app.run(debug=True)
