@@ -38,6 +38,11 @@ def read_note(note_id):
     html = markdown.markdown(text)
     return flask.render_template('read_note.html', text=html, note_id=note_id, note_ids=note.list_ids())
 
+@app.route('/note/read/<int:note_id>.raw')
+@auth.requires_auth
+def read_note_raw(note_id):
+    return flask.Response(note.read(note_id), 200, {'content-type': 'text/plain'})
+
 @app.route('/note/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
 def update_note(note_id):
