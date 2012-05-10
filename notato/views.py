@@ -9,12 +9,13 @@ from notato import app
 @app.route('/')
 @auth.requires_auth
 def index():
-    return flask.redirect(flask.url_for('create_note'))
+    return flask.redirect(flask.url_for('notes'))
 
 @app.route('/note')
 @auth.requires_auth
 def notes():
-    return flask.redirect(flask.url_for('create_note'))
+    first_id = note.list_ids()[0]
+    return flask.redirect(flask.url_for('read_note', note_id=first_id))
 
 @app.route('/note/create')
 @auth.requires_auth
