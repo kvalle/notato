@@ -8,10 +8,6 @@ import note
 
 from notato import app
 
-@app.before_request
-def before_request():
-    g.note_ids = note.list_ids()
-
 @app.route('/')
 @auth.requires_auth
 def index():
