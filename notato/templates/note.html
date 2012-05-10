@@ -7,8 +7,36 @@
         <textarea name="note">{{text}}</textarea>
         <input type="hidden" id="next_state" name="next_state" value="" />
         <br />
-        <input class="btn save-note" type="submit" value="Save" data-next-state="edit" />
-        <input class="btn save-note" type="submit" value="Read" data-next-state="read" />
-        <a class="btn" href="{{ url_for('delete_note', note_id=note_id) }}">Delete</a>
+                
+        <div class="btn-group">
+            <a class="btn save-note" href="#" data-next-state="read">
+                <i class="icon-eye-open"></i>
+                Save and read
+            </a>
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="save-note" href="#" data-next-state="write">
+                        <i class="icon-pencil"></i>
+                        Save
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <i class="icon-refresh"></i>
+                        Discard changes
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="{{url_for('delete_note', note_id=note_id)}}">
+                        <i class="icon-trash"></i>
+                        Delete
+                    </a>
+                </li>                
+            </ul>
+        </div><!-- /btn-group -->
     </form>
 {% endblock %}

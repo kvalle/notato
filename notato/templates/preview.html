@@ -8,6 +8,13 @@
     {{text}}
     {% endautoescape %}
     </div>
-    <a class="btn" href="{{url_for('update_note', note_id=note_id)}}">Edit</a>
-    <a class="btn" href="{{url_for('delete_note', note_id=note_id)}}">Delete</a>
+    <a class="btn" href="{{url_for('update_note', note_id=note_id)}}">
+        <i class="icon-pencil"></i>
+        Edit
+    </a>
+    <a class="btn" href="{{url_for('delete_note', note_id=note_id)}}">
+        <i class="icon-trash"></i>
+        Delete
+    </a>
+    
 {% endblock %}
