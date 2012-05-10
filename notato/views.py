@@ -36,7 +36,7 @@ def create_note():
 def read_note(note_id):
     text = note.read(note_id)
     html = markdown.markdown(text)
-    return flask.render_template('preview.html', text=html, note_id=note_id, note_ids=note.list_ids())
+    return flask.render_template('read_note.html', text=html, note_id=note_id, note_ids=note.list_ids())
 
 @app.route('/note/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
@@ -51,7 +51,7 @@ def update_note(note_id):
             return flask.redirect(read_url)
     else:
         text = note.read(note_id)
-    return flask.render_template('note.html', text=text, note_id=note_id, note_ids=note.list_ids())
+    return flask.render_template('edit_note.html', text=text, note_id=note_id, note_ids=note.list_ids())
 
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
