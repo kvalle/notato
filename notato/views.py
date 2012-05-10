@@ -28,7 +28,7 @@ def create_note():
     next = 1
     while next in existing:
         next += 1
-    note_url = flask.url_for('update_note', note_id=next)
+    note_url = flask.url_for('edit_note', note_id=next)
     return flask.redirect(note_url)
 
 @app.route('/note/read/<int:note_id>')
@@ -45,7 +45,7 @@ def read_note_raw(note_id):
 
 @app.route('/note/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
-def update_note(note_id):
+def edit_note(note_id):
     if flask.request.method == 'POST':
         text = flask.request.form['note']
         note.write(note_id, text)
