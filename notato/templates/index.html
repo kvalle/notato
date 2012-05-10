@@ -3,7 +3,7 @@
 {% block title %}Home{% endblock %}
 {% block content %}
     {% if note_ids %}
-        <ul>
+        <ul class="unstyled">
         {% for id in note_ids %}
             <li>
                 <a href="{{url_for('update_note', note_id=id)}}">Note {{id}}</a>
