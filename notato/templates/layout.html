@@ -49,11 +49,12 @@
       <div class="span12">
         {% with messages = get_flashed_messages() %}
           {% if messages %}
-            <ul class=flashes>
             {% for message in messages %}
-              <li>{{ message }}</li>
+              <div class="alert alert-success">
+                <a class="close" data-dismiss="alert" href="#">×</a>
+                {{ message }}
+              </div>
             {% endfor %}
-            </ul>
           {% endif %}
         {% endwith %}
       </div>
