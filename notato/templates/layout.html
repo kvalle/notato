@@ -24,7 +24,6 @@
 
 </head>
 <body>
-
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
@@ -43,8 +42,23 @@
       </div>
     </div>
   </div>
-  
   <div class="container">
+  
+      <div class="row">
+        <div class="span12">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-success">
+                  <a class="close" data-dismiss="alert" href="#">×</a>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+      </div>
+      
       <div class="row">
         <div class="span3">
           <div class="well sidebar-nav">
@@ -64,18 +78,6 @@
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
-        <div class="span9">
-          {% with messages = get_flashed_messages() %}
-            {% if messages %}
-              {% for message in messages %}
-                <div class="alert alert-success">
-                  <a class="close" data-dismiss="alert" href="#">×</a>
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
-        </div>
         <div class="span9">
           {% block content %}{% endblock %}
         </div>
