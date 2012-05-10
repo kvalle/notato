@@ -27,7 +27,7 @@ def update_note(note_id):
     if flask.request.method == 'POST':
         text = flask.request.form['note']
         note.write(note_id, text)
-        flask.flash('Note %d was saved.' % note_id)
+        flask.flash('Note %d was successfully saved.' % note_id)
     else:
         text = note.read(note_id)
     return flask.render_template('note.html', text=text, note_id=note_id)
@@ -36,6 +36,6 @@ def update_note(note_id):
 @auth.requires_auth
 def delete_note(note_id):
     note.delete(note_id)
-    flask.flash('Note %d deleted.' % note_id)
+    flask.flash('Note %d was successfully deleted.' % note_id)
     return flask.redirect(flask.url_for('index'))
 
