@@ -3,11 +3,12 @@
 {% block title %}Note {{note_id}}{% endblock %}
 {% block note_content %}
     <h2>Note {{note_id}}</h2>
-    <form method="POST">
+    <form action="{{ url_for('update_note', note_id=note_id) }}" method="POST">
         <textarea name="note">{{text}}</textarea>
+        <input type="hidden" id="next_state" name="next_state" value="" />
         <br />
-        <input class="btn" type="submit" value="Save" />
-        <a class="btn" href="{{url_for('read_note', note_id=note_id)}}">Read</a>
-        <a class="btn" href="{{url_for('delete_note', note_id=note_id)}}">Delete</a>
+        <input class="btn save-note" type="submit" value="Save" data-next-state="edit" />
+        <input class="btn save-note" type="submit" value="Read" data-next-state="read" />
+        <a class="btn" href="{{ url_for('delete_note', note_id=note_id) }}">Delete</a>
     </form>
 {% endblock %}

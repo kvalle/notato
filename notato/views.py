@@ -40,6 +40,10 @@ def update_note(note_id):
         text = flask.request.form['note']
         note.write(note_id, text)
         flask.flash('Note %d was successfully saved.' % note_id)
+        next_state = flask.request.form['next_state']
+        if next_state == 'read':
+            read_url = flask.url_for('read_note', note_id=note_id)
+            return flask.redirect(read_url)
     else:
         text = note.read(note_id)
     return flask.render_template('note.html', text=text, note_id=note_id, note_ids=note.list_ids())
