@@ -1,3 +1,4 @@
+from flask import g
 import flask
 import markdown
 
@@ -7,6 +8,10 @@ import note
 
 from notato import app
 
+@app.before_request
+def before_request():
+    g.note_ids = note.list_ids()
+
 @app.route('/')
 @auth.requires_auth
 def index():
@@ -15,18 +20,16 @@ def index():
 @app.route('/note/')
 @auth.requires_auth
 def notes():
-    note_ids = note.list_ids()
-    if note_ids:
-        first_id = note_ids[0]
+    if g.note_ids:
+        first_id = g.note_ids[0]
         return flask.redirect(flask.url_for('read_note', note_id=first_id))
     return flask.redirect(flask.url_for('create_note'))
 
 @app.route('/note/create/')
 @auth.requires_auth
 def create_note():
-    existing = note.list_ids()
     next = 1
-    while next in existing:
+    while next in g.note_ids:
         next += 1
     note_url = flask.url_for('edit_note', note_id=next)
     return flask.redirect(note_url)
@@ -36,7 +39,7 @@ def create_note():
 def read_note(note_id):
     text = note.read(note_id)
     html = markdown.markdown(text)
-    return flask.render_template('read_note.html', text=html, note_id=note_id, note_ids=note.list_ids())
+    return flask.render_template('read_note.html', text=html, note_id=note_id)
 
 @app.route('/note/read/<int:note_id>.raw')
 @auth.requires_auth
@@ -57,7 +60,7 @@ def edit_note(note_id):
     if target == 'read':
         return flask.redirect(flask.url_for('read_note', note_id=note_id))
     else:
-        return flask.render_template('edit_note.html', text=text, note_id=note_id, note_ids=note.list_ids())
+        return flask.render_template('edit_note.html', text=text, note_id=note_id)
 
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
