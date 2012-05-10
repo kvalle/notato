@@ -8,13 +8,27 @@
     {{text}}
     {% endautoescape %}
     </div>
-    <a class="btn" href="{{url_for('update_note', note_id=note_id)}}">
-        <i class="icon-pencil"></i>
-        Edit
-    </a>
-    <a class="btn" href="{{url_for('delete_note', note_id=note_id)}}">
-        <i class="icon-trash"></i>
-        Delete
-    </a>
+    <div class="btn-group">
+            <a class="btn" href="{{url_for('update_note', note_id=note_id)}}">
+                <i class="icon-pencil"></i>
+                Edit note
+            </a>
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <a href="{{url_for('read_note_raw', note_id=note_id)}}">
+                    <i class="icon-file"></i>
+                    View source
+                </a>
+                <li class="divider"></li>
+                <li>
+                    <a href="{{url_for('delete_note', note_id=note_id)}}">
+                        <i class="icon-trash"></i>
+                        Delete
+                    </a>
+                </li>
+            </ul>
+        </div><!-- /btn-group -->
     
 {% endblock %}
