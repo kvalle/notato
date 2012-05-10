@@ -9,7 +9,7 @@ from notato import app
 @app.route('/', methods=['GET', 'POST'])
 @auth.requires_auth
 def index():
-    return flask.render_template('index.html', note_ids=note.list_ids())
+    return flask.redirect(flask.url_for('create_note'))
 
 @app.route('/note/create')
 @auth.requires_auth
@@ -44,4 +44,9 @@ def delete_note(note_id):
     note.delete(note_id)
     flask.flash('Note %d was successfully deleted.' % note_id)
     return flask.redirect(flask.url_for('index'))
+
+@app.route('/about')
+@auth.requires_auth
+def about():
+    return flask.render_template('about.html')
 

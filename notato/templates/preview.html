@@ -1,7 +1,7 @@
-{% extends "layout.html" %}
+{% extends "notes.html" %}
 
-{% block title %}Preview of note {{note_id}}{% endblock %}
-{% block content %}
+{% block title %}Note {{note_id}}{% endblock %}
+{% block note_content %}
     <h1>Note {{note_id}}</h1>
     <pre>
 {{text}}

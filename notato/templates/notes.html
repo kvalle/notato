@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="row">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li><a class="btn" href="{{url_for('create_note')}}">New note</a></li>
+              {% if note_ids %}
+                <li class="nav-header">List of notes</li>
+                {% for id in note_ids %}
+                    <li {% if id==note_id %}class="active"{% endif %}>
+                      <a href="{{url_for('read_note', note_id=id)}}">Note {{id}}</a>
+                    </li>
+                {% endfor %}
+              {% else %}
+                <li class="divider"></li>
+                <li><em>There are no notes yet. Press the shiny button above to get started.</em></li>
+              {% endif %}
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+          {% block note_content %}{% endblock %}
+        </div>
+      </div><!--/row-->
+    </div><!--/container-->
+{% endblock %}
+

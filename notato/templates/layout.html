@@ -35,8 +35,8 @@
         <a class="brand" href="{{url_for('index')}}">Notato</a>
         <div style="height: auto;" class="nav-collapse in collapse">
           <ul class="nav">
-            <li class="active"><a href="{{url_for('index')}}">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="{{url_for('index')}}">Notes</a></li>
+            <li><a href="{{url_for('about')}}">About</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -59,30 +59,7 @@
         </div>
       </div>
       
-      <div class="row">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li><a class="btn" href="{{url_for('create_note')}}">New note</a></li>
-              {% if note_ids %}
-                <li class="nav-header">List of notes</li>
-                {% for id in note_ids %}
-                    <li {% if id==note_id %}class="active"{% endif %}>
-                      <a href="{{url_for('read_note', note_id=id)}}">Note {{id}}</a>
-                    </li>
-                {% endfor %}
-              {% else %}
-                <li class="divider"></li>
-                <li><em>There are no notes yet. Press the shiny button above to get started.</em></li>
-              {% endif %}
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-        <div class="span9">
-          {% block content %}{% endblock %}
-        </div>
-      </div><!--/row-->
-    </div><!--/container-->
+      {% block content %}{% endblock %}
 
   <script src="/static/js/jquery.js"></script>
   <script src="/static/js/bootstrap.js"></script>
