@@ -48,7 +48,7 @@ def edit_note(note_id):
     target = 'edit'
     if flask.request.method == 'POST':
         text = flask.request.form['note']
-        note.write(note_id, text)
+        note.write(note_id, "", text)
         flask.flash('Note %d was successfully saved.' % note_id)
         target = flask.request.form['target_state']
     else:
