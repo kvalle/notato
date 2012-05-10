@@ -2,6 +2,9 @@
 
 {% block title %}Home{% endblock %}
 {% block content %}
+    <p>
+        <a class="btn" href="{{url_for('create_note')}}">Write new note</a>
+    </p>
     {% if note_ids %}
         <ul class="unstyled">
         {% for id in note_ids %}
@@ -12,6 +15,5 @@
         {% endfor %}
         </ul>
     {% endif %}
-    <a href="{{url_for('create_note')}}">New note</a>
 {% endblock %}
 

@@ -2,7 +2,10 @@
 
 {% block title %}Preview of note {{note_id}}{% endblock %}
 {% block content %}
-    <h2>Preview of note {{note_id}}</h2>
-    <hr>
-    {{text}}
+    <h1>Note {{note_id}}
+    <a class="btn" href="{{url_for('update_note', note_id=note_id)}}">Edit</a>
+    </h1>
+    <pre>
+{{text}}
+    </pre>
 {% endblock %}
