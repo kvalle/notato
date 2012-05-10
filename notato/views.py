@@ -46,17 +46,18 @@ def read_note_raw(note_id):
 @app.route('/note/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
 def edit_note(note_id):
+    target = 'edit'
     if flask.request.method == 'POST':
         text = flask.request.form['note']
         note.write(note_id, text)
         flask.flash('Note %d was successfully saved.' % note_id)
-        next_state = flask.request.form['next_state']
-        if next_state == 'read':
-            read_url = flask.url_for('read_note', note_id=note_id)
-            return flask.redirect(read_url)
+        target = flask.request.form['target_state']
     else:
         text = note.read(note_id)
-    return flask.render_template('edit_note.html', text=text, note_id=note_id, note_ids=note.list_ids())
+    if target == 'read':
+        return flask.redirect(flask.url_for('read_note', note_id=note_id))
+    else:
+        return flask.render_template('edit_note.html', text=text, note_id=note_id, note_ids=note.list_ids())
 
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth

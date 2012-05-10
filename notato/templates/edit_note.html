@@ -1,13 +1,12 @@
 {% extends "notes.html" %}
-
 {% block title %}Note {{note_id}}{% endblock %}
 {% block note_content %}
     <h2>Note {{note_id}}</h2>
     <form class="note-form" action="{{ url_for('edit_note', note_id=note_id) }}" method="POST">
         <textarea name="note">{{text}}</textarea>
-        <input type="hidden" id="next_state" name="next_state" value="" />
+        <input type="hidden" id="target_state" name="target_state" value="" />
         <div class="btn-group">
-            <a class="btn save-note" href="#" data-next-state="read">
+            <a class="btn save-note" href="#" data-target-state="read">
                 <i class="icon-eye-open"></i>
                 Save and read
             </a>
@@ -16,7 +15,7 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="save-note" href="#" data-next-state="write">
+                    <a class="save-note" href="#" data-target-state="edit">
                         <i class="icon-pencil"></i>
                         Save
                     </a>
