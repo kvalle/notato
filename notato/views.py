@@ -57,10 +57,7 @@ def edit_note(note_id):
     if target == 'read':
         return flask.redirect(flask.url_for('read_note', note_id=note_id))
     else:
-        print "edit!"
-        note_ids = note.list_ids()
-        print "edit?"
-        return flask.render_template('edit_note.html', text=text, note_id=note_id, note_ids=note_ids)
+        return flask.render_template('edit_note.html', text=text, note_id=note_id, note_ids=note.list_ids())
 
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
