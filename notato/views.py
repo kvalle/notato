@@ -21,7 +21,13 @@ def create_note():
     note_url = flask.url_for('update_note', note_id=next)
     return flask.redirect(note_url)
 
-@app.route('/note/<int:note_id>', methods=['GET', 'POST'])
+@app.route('/note/read/<int:note_id>')
+@auth.requires_auth
+def read_note(note_id):
+    text = note.read(note_id)
+    return flask.render_template('preview.html', text=text, note_id=note_id)
+
+@app.route('/note/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
 def update_note(note_id):
     if flask.request.method == 'POST':
