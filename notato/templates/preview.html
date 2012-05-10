@@ -3,9 +3,11 @@
 {% block title %}Note {{note_id}}{% endblock %}
 {% block note_content %}
     <h1>Note {{note_id}}</h1>
-    <pre>
-{{text}}
-    </pre>
+    <div>
+    {% autoescape false %}
+    {{text}}
+    {% endautoescape %}
+    </div>
     <a class="btn" href="{{url_for('update_note', note_id=note_id)}}">Edit</a>
     <a class="btn" href="{{url_for('delete_note', note_id=note_id)}}">Delete</a>
 {% endblock %}
