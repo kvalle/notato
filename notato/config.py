@@ -1,5 +1,5 @@
 USERNAME = 'admin'
 PASSWORD = 'password'
-STORAGE = 'notato/storage'
+SHELVE_FILENAME = 'notato/storage/shelve.db'
 SECRET_KEY = 'dev_key'
 DEBUG = True

@@ -1,25 +1,24 @@
 import os
 import os.path
 import config
+from flask.ext import shelve
+from notato import app
+from flask import g
+
+@app.before_request
+def before_request():
+    g.db = shelve.get_shelve('c')
 
 def list_ids():
-    return sorted(map(int, os.listdir(config.STORAGE)))
+    return sorted(map(int, g.db))
 
 def write(note_id, text):
-    with open(_note_file_name(note_id), 'w') as n:
-        n.write(text)
+    g.db[str(note_id)] = text
         
-def _note_file_name(note_id):
-    return os.path.join(config.STORAGE, str(note_id))
-
 def read(note_id):
-    if not _is_note(note_id):
+    if not str(note_id) in g.db:
         return ""
-    with open(_note_file_name(note_id), 'r') as n:
-        return n.read()
-
-def _is_note(note_id):
-    return os.path.isfile(_note_file_name(note_id))
+    return g.db[str(note_id)]
 
 def delete(note_id):
-    os.remove(_note_file_name(note_id))
+    del g.db[str(note_id)]
