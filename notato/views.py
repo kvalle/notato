@@ -6,9 +6,14 @@ import note
 
 from notato import app
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 @auth.requires_auth
 def index():
+    return flask.redirect(flask.url_for('create_note'))
+
+@app.route('/note')
+@auth.requires_auth
+def notes():
     return flask.redirect(flask.url_for('create_note'))
 
 @app.route('/note/create')
