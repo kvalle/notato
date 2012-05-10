@@ -12,7 +12,7 @@ from notato import app
 def index():
     return flask.redirect(flask.url_for('notes'))
 
-@app.route('/note')
+@app.route('/note/')
 @auth.requires_auth
 def notes():
     note_ids = note.list_ids()
@@ -21,7 +21,7 @@ def notes():
         return flask.redirect(flask.url_for('read_note', note_id=first_id))
     return flask.redirect(flask.url_for('create_note'))
 
-@app.route('/note/create')
+@app.route('/note/create/')
 @auth.requires_auth
 def create_note():
     existing = note.list_ids()
@@ -66,7 +66,7 @@ def delete_note(note_id):
     flask.flash('Note %d was successfully deleted.' % note_id)
     return flask.redirect(flask.url_for('index'))
 
-@app.route('/about')
+@app.route('/about/')
 @auth.requires_auth
 def about():
     return flask.render_template('about.html')
