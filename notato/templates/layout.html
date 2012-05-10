@@ -43,28 +43,44 @@
       </div>
     </div>
   </div>
-
+  
   <div class="container">
-    <div class="row">
-      <div class="span12">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-success">
-                <a class="close" data-dismiss="alert" href="#">×</a>
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-      </div>
-    </div>
-    <div class="row">
-      <div class="span12">
-        {% block content %}{% endblock %}
-      </div>
-    </div>
-  </div>
+      <div class="row">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li><a class="btn" href="{{url_for('create_note')}}">New note</a></li>
+              {% if note_ids %}
+                <li class="nav-header">List of notes</li>
+                {% for id in note_ids %}
+                    <li {% if id==note_id %}class="active"{% endif %}>
+                      <a href="{{url_for('read_note', note_id=id)}}">Note {{id}}</a>
+                    </li>
+                {% endfor %}
+              {% else %}
+                <li class="divider"></li>
+                <li><em>There are no notes yet. Press the shiny button above to get started.</em></li>
+              {% endif %}
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-success">
+                  <a class="close" data-dismiss="alert" href="#">×</a>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+        <div class="span9">
+          {% block content %}{% endblock %}
+        </div>
+      </div><!--/row-->
+    </div><!--/container-->
 
   <script src="/static/js/jquery.js"></script>
   <script src="/static/js/bootstrap.js"></script>

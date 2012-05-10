@@ -2,18 +2,7 @@
 
 {% block title %}Home{% endblock %}
 {% block content %}
-    <p>
-        <a class="btn" href="{{url_for('create_note')}}">Write new note</a>
-    </p>
-    {% if note_ids %}
-        <ul class="unstyled">
-        {% for id in note_ids %}
-            <li>
-                <a href="{{url_for('update_note', note_id=id)}}">Note {{id}}</a>
-                <a href="{{url_for('delete_note', note_id=id)}}">[x]</a>
-            </li>
-        {% endfor %}
-        </ul>
-    {% endif %}
+  <h1>Home</h1>
+  </p>index content here</p>
 {% endblock %}
 

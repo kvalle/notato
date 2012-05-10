@@ -25,7 +25,7 @@ def create_note():
 @auth.requires_auth
 def read_note(note_id):
     text = note.read(note_id)
-    return flask.render_template('preview.html', text=text, note_id=note_id)
+    return flask.render_template('preview.html', text=text, note_id=note_id, note_ids=note.list_ids())
 
 @app.route('/note/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
@@ -36,7 +36,7 @@ def update_note(note_id):
         flask.flash('Note %d was successfully saved.' % note_id)
     else:
         text = note.read(note_id)
-    return flask.render_template('note.html', text=text, note_id=note_id)
+    return flask.render_template('note.html', text=text, note_id=note_id, note_ids=note.list_ids())
 
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
