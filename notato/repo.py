@@ -23,14 +23,10 @@ def write(n):
     g.db[str(n.id)] = n
     g.note_ids = list_ids()
 
-def is_note(note_id):
-    return str(note_id) in g.db
-
 def read(note_id):
-    if not is_note(note_id):
-        return ("", "")
-    n = g.db[str(note_id)]
-    return n
+    if not str(note_id) in g.db:
+        return None
+    return g.db[str(note_id)]
 
 def delete(note_id):
     del g.db[str(note_id)]
