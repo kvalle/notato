@@ -32,6 +32,8 @@ def read_note(note_id):
     if not note.is_note(note_id):
         flask.abort(404)
     title, text = note.read(note_id)
+    if not title:
+        title = 'untitled note'
     html = markdown.markdown(text)
     return flask.render_template('read_note.html', text=html, title=title, note_id=note_id)
 
@@ -48,7 +50,7 @@ def read_note_raw(note_id):
 def edit_note(note_id):
     target = 'edit'
     if flask.request.method == 'POST':
-        note_title = flask.request.form.get('note_title', '')
+        note_title = flask.request.form.get('note_title', '').strip()
         note_text = flask.request.form.get('note_text', '')
         target = flask.request.form.get('target_state','edit')
         note.write(note_id, note_title, note_text)
