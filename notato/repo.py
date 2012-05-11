@@ -8,23 +8,23 @@ from flask import g
 @app.before_request
 def before_request():
     g.db = shelve.get_shelve('c')
-    g.note_ids = list_ids()
+    g.note_ids = _get_ids()
 
-def list_ids():
+def _get_ids():
     return sorted(map(int, g.db))
 
-def write(note):
+def save(note):
     g.db[str(note.id)] = note
-    g.note_ids = list_ids()
+    g.note_ids = _get_ids()
 
-def read(note_id):
+def get(note_id):
     if not str(note_id) in g.db:
         return None
     return g.db[str(note_id)]
 
 def delete(note_id):
     del g.db[str(note_id)]
-    g.note_ids = list_ids()
+    g.note_ids = _get_ids()
 
 def next_id():
     next_id = 1

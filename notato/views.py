@@ -31,7 +31,7 @@ def create_note():
 @app.route('/note/read/<int:note_id>')
 @auth.requires_auth
 def read_note(note_id):
-    note = repo.read(note_id)
+    note = repo.get(note_id)
     if not note: 
         flask.abort(404)
     if not note.title:
@@ -42,7 +42,7 @@ def read_note(note_id):
 @app.route('/note/read/<int:note_id>.raw')
 @auth.requires_auth
 def read_note_raw(note_id):
-    note = repo.read(note_id)
+    note = repo.get(note_id)
     if not note: 
         flask.abort(404)
     return flask.Response(note.text, 200, {'content-type': 'text/plain'})
@@ -56,10 +56,10 @@ def edit_note(note_id):
         text = flask.request.form.get('note_text', '')
         target = flask.request.form.get('target_state','edit')
         note = Note(note_id, title, text)
-        repo.write(note)
+        repo.save(note)
         flask.flash('Note was successfully saved.')
     else:
-        note = repo.read(note_id)
+        note = repo.get(note_id)
         if not note: 
             flask.abort(404)
     if target == 'read':
@@ -70,7 +70,7 @@ def edit_note(note_id):
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
-    note = repo.read(note_id)
+    note = repo.get(note_id)
     if not note: 
         flask.abort(404)
     repo.delete(note.id)
