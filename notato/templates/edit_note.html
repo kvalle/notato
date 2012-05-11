@@ -1,15 +1,15 @@
 {% extends "notes.html" %}
-{% block title %}{{page_title}} {{note_title}}{% endblock %}
+{% block title %}{{page_title}} {{note.title}}{% endblock %}
 {% block note_content %}
     <div class="page-header">
         <h1>{{page_title}}</h1>
     </div>
-    <form class="note-form" action="{{ url_for('edit_note', note_id=note_id) }}" method="POST">
+    <form class="note-form" action="{{ url_for('edit_note', note_id=note.id) }}" method="POST">
         <label>Note title</label>
-        <input type="text" name="note_title" value="{{note_title}}"/>
+        <input type="text" name="note_title" value="{{note.title}}"/>
 
         <label>Contents</label>
-        <textarea name="note_text">{{note_text}}</textarea>
+        <textarea name="note_text">{{note.text}}</textarea>
 
         <input type="hidden" id="target_state" name="target_state" value="" />
 
@@ -36,7 +36,7 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <a href="{{url_for('delete_note', note_id=note_id)}}">
+                    <a href="{{url_for('delete_note', note_id=note.id)}}">
                         <i class="icon-trash"></i>
                         Delete
                     </a>

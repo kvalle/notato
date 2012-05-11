@@ -35,7 +35,7 @@ def read_note(note_id):
     if not n.title:
         n.title = 'untitled note'
     n.html = markdown.markdown(n.text)
-    return flask.render_template('read_note.html', note_text=n.html, note_title=n.title, note_id=n.id)
+    return flask.render_template('read_note.html', note=n)
 
 @app.route('/note/read/<int:note_id>.raw')
 @auth.requires_auth
@@ -63,7 +63,7 @@ def edit_note(note_id):
     if target == 'read':
         return flask.redirect(flask.url_for('read_note', note_id=n.id))
     else:
-        return flask.render_template('edit_note.html', page_title='Edit note', note_text=n.text, note_title=n.title, note_id=n.id)
+        return flask.render_template('edit_note.html', page_title='Edit note', note=n)
 
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
