@@ -6,8 +6,8 @@ from notato import app
 from flask import g
 
 class Note:
-    def __init__(self, nid=None, title="", text=""):
-        self.id = nid
+    def __init__(self, note_id=None, title="", text=""):
+        self.id = note_id
         self.title = title
         self.text = text
 
@@ -19,8 +19,8 @@ def before_request():
 def list_ids():
     return sorted(map(int, g.db))
 
-def write(n):
-    g.db[str(n.id)] = n
+def write(note):
+    g.db[str(n.id)] = note
     g.note_ids = list_ids()
 
 def read(note_id):
