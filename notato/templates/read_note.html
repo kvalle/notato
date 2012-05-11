@@ -6,7 +6,7 @@
         <h1>{{note.title}}</h1>
     </div>
     {% autoescape false %}
-    {{note.text}}
+    {{note.html}}
     {% endautoescape %}
     <div class="btn-group">
             <a class="btn" href="{{url_for('edit_note', note_id=note.id)}}">
