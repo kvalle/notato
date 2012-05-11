@@ -10,7 +10,7 @@
               {% if g.note_ids %}
                 <li class="nav-header">List of notes</li>
                 {% for id in g.note_ids %}
-                    <li {% if id==note_id %}class="active"{% endif %}>
+                    <li {% if note and id==note.id %}class="active"{% endif %}>
                       <a href="{{url_for('read_note', note_id=id)}}">Note {{id}}</a>
                     </li>
                 {% endfor %}
