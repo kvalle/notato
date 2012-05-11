@@ -17,9 +17,9 @@ def index():
 @auth.requires_auth
 def notes():
     if g.note_ids:
-        first_id = g.note_ids[0]
-        return flask.redirect(flask.url_for('read_note', note_id=first_id))
-    return flask.redirect(flask.url_for('create_note'))
+        return flask.redirect(flask.url_for('read_note', note_id=g.note_ids[0]))
+    else:
+        return flask.redirect(flask.url_for('create_note'))
 
 @app.route('/note/create/')
 @auth.requires_auth
