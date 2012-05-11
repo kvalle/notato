@@ -5,6 +5,12 @@ from flask.ext import shelve
 from notato import app
 from flask import g
 
+class Note:
+    def __init__(self, nid, title, text):
+        self.id = nid
+        self.title = title
+        self.text = text
+
 @app.before_request
 def before_request():
     g.db = shelve.get_shelve('c')
