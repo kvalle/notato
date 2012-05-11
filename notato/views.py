@@ -31,11 +31,11 @@ def create_note():
 def read_note(note_id):
     if not note.is_note(note_id):
         flask.abort(404)
-    title, text = note.read(note_id)
-    if not title:
-        title = 'untitled note'
-    html = markdown.markdown(text)
-    return flask.render_template('read_note.html', note_text=html, note_title=title, note_id=note_id)
+    n = note.read(note_id)
+    if not n.title:
+        n.title = 'untitled note'
+    n.html = markdown.markdown(n.text)
+    return flask.render_template('read_note.html', note_text=n.html, note_title=n.title, note_id=n.id)
 
 @app.route('/note/read/<int:note_id>.raw')
 @auth.requires_auth
@@ -53,16 +53,17 @@ def edit_note(note_id):
         note_title = flask.request.form.get('note_title', '').strip()
         note_text = flask.request.form.get('note_text', '')
         target = flask.request.form.get('target_state','edit')
-        note.write(note_id, note_title, note_text)
+        n = note.Note(note_id, note_title, note_text)
+        note.write(n)
         flask.flash('Note %d was successfully saved.' % note_id)
     else:
         if not note.is_note(note_id):
             flask.abort(404)
-        note_title, note_text = note.read(note_id)
+        n = note.read(note_id)
     if target == 'read':
-        return flask.redirect(flask.url_for('read_note', note_id=note_id))
+        return flask.redirect(flask.url_for('read_note', note_id=n.id))
     else:
-        return flask.render_template('edit_note.html', page_title='Edit note', note_text=note_text, note_title=note_title, note_id=note_id)
+        return flask.render_template('edit_note.html', page_title='Edit note', note_text=n.text, note_title=n.title, note_id=n.id)
 
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth

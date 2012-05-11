@@ -19,8 +19,8 @@ def before_request():
 def list_ids():
     return sorted(map(int, g.db))
 
-def write(note_id, title, text):
-    g.db[str(note_id)] = (title, text)
+def write(n):
+    g.db[str(n.id)] = n
     g.note_ids = list_ids()
 
 def is_note(note_id):
@@ -29,7 +29,8 @@ def is_note(note_id):
 def read(note_id):
     if not is_note(note_id):
         return ("", "")
-    return g.db[str(note_id)]
+    n = g.db[str(note_id)]
+    return n
 
 def delete(note_id):
     del g.db[str(note_id)]
