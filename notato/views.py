@@ -6,6 +6,7 @@ import config
 import auth
 import repo
 
+from notato.models import Note
 from notato import app
 
 @app.route('/')
@@ -24,7 +25,7 @@ def notes():
 @app.route('/note/create/')
 @auth.requires_auth
 def create_note():
-    note = repo.Note(nid=repo.next_id())
+    note = Note(note_id=repo.next_id())
     return flask.render_template('edit_note.html', page_title='Create note', note=note)
 
 @app.route('/note/read/<int:note_id>')
@@ -54,7 +55,7 @@ def edit_note(note_id):
         title = flask.request.form.get('note_title', '').strip()
         text = flask.request.form.get('note_text', '')
         target = flask.request.form.get('target_state','edit')
-        note = repo.Note(note_id, title, text)
+        note = Note(note_id, title, text)
         repo.write(note)
         flask.flash('Note was successfully saved.')
     else:
