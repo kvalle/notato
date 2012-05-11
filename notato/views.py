@@ -24,9 +24,6 @@ def notes():
 @app.route('/note/create/')
 @auth.requires_auth
 def create_note():
-    next = 1
-    while next in g.note_ids:
-        next += 1
     note_url = flask.url_for('edit_note', note_id=next)
     return flask.redirect(note_url)
 

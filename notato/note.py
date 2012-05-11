@@ -25,3 +25,9 @@ def read(note_id):
 def delete(note_id):
     del g.db[str(note_id)]
     g.note_ids = list_ids()
+
+def next_id():
+    next_id = 1
+    while next_id in g.note_ids:
+        next_id += 1
+    return next_id
