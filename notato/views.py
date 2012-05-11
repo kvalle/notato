@@ -29,6 +29,8 @@ def create_note():
 @app.route('/note/read/<int:note_id>')
 @auth.requires_auth
 def read_note(note_id):
+    if not note.is_note(note_id):
+        flask.abort(404)
     title, text = note.read(note_id)
     html = markdown.markdown(text)
     return flask.render_template('read_note.html', text=html, title=title, note_id=note_id)
@@ -36,6 +38,8 @@ def read_note(note_id):
 @app.route('/note/read/<int:note_id>.raw')
 @auth.requires_auth
 def read_note_raw(note_id):
+    if not note.is_note(note_id):
+        flask.abort(404)
     _, text = note.read(note_id)
     return flask.Response(text, 200, {'content-type': 'text/plain'})
 
@@ -50,6 +54,8 @@ def edit_note(note_id):
         note.write(note_id, note_title, note_text)
         flask.flash('Note %d was successfully saved.' % note_id)
     else:
+        if not note.is_note(note_id):
+            flask.abort(404)
         note_title, note_text = note.read(note_id)
     if target == 'read':
         return flask.redirect(flask.url_for('read_note', note_id=note_id))
@@ -59,6 +65,8 @@ def edit_note(note_id):
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
+    if not note.is_note(note_id):
+        flask.abort(404)
     note.delete(note_id)
     flask.flash('Note %d was successfully deleted.' % note_id)
     return flask.redirect(flask.url_for('index'))
