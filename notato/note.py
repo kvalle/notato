@@ -16,9 +16,12 @@ def list_ids():
 def write(note_id, title, text):
     g.db[str(note_id)] = (title, text)
     g.note_ids = list_ids()
-        
+
+def is_note(note_id):
+    return str(note_id) in g.db
+
 def read(note_id):
-    if not str(note_id) in g.db:
+    if not is_note(note_id):
         return ("", "")
     return g.db[str(note_id)]
 
