@@ -4,7 +4,7 @@ import markdown
 
 import config
 import auth
-import note
+import repo
 
 from notato import app
 
@@ -24,14 +24,15 @@ def notes():
 @app.route('/note/create/')
 @auth.requires_auth
 def create_note():
-    return flask.render_template('edit_note.html', page_title='Create note', note_id=note.next_id())
+    n = repo.Note(nid=repo.next_id())
+    return flask.render_template('edit_note.html', page_title='Create note', note=n)
 
 @app.route('/note/read/<int:note_id>')
 @auth.requires_auth
 def read_note(note_id):
-    if not note.is_note(note_id):
+    if not repo.is_note(note_id):
         flask.abort(404)
-    n = note.read(note_id)
+    n = repo.read(note_id)
     if not n.title:
         n.title = 'untitled note'
     n.html = markdown.markdown(n.text)
@@ -40,10 +41,10 @@ def read_note(note_id):
 @app.route('/note/read/<int:note_id>.raw')
 @auth.requires_auth
 def read_note_raw(note_id):
-    if not note.is_note(note_id):
+    if not repo.is_note(note_id):
         flask.abort(404)
-    _, text = note.read(note_id)
-    return flask.Response(text, 200, {'content-type': 'text/plain'})
+    n = repo.read(note_id)
+    return flask.Response(n.text, 200, {'content-type': 'text/plain'})
 
 @app.route('/note/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
@@ -53,13 +54,13 @@ def edit_note(note_id):
         note_title = flask.request.form.get('note_title', '').strip()
         note_text = flask.request.form.get('note_text', '')
         target = flask.request.form.get('target_state','edit')
-        n = note.Note(note_id, note_title, note_text)
-        note.write(n)
+        n = repo.Note(note_id, note_title, note_text)
+        repo.write(n)
         flask.flash('Note %d was successfully saved.' % note_id)
     else:
-        if not note.is_note(note_id):
+        if not repo.is_note(note_id):
             flask.abort(404)
-        n = note.read(note_id)
+        n = repo.read(note_id)
     if target == 'read':
         return flask.redirect(flask.url_for('read_note', note_id=n.id))
     else:
@@ -68,9 +69,9 @@ def edit_note(note_id):
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
-    if not note.is_note(note_id):
+    if not repo.is_note(note_id):
         flask.abort(404)
-    note.delete(note_id)
+    repo.delete(note_id)
     flask.flash('Note %d was successfully deleted.' % note_id)
     return flask.redirect(flask.url_for('index'))
 

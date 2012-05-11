@@ -6,7 +6,7 @@ from notato import app
 from flask import g
 
 class Note:
-    def __init__(self, nid, title, text):
+    def __init__(self, nid=None, title="", text=""):
         self.id = nid
         self.title = title
         self.text = text
