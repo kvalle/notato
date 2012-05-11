@@ -24,8 +24,7 @@ def notes():
 @app.route('/note/create/')
 @auth.requires_auth
 def create_note():
-    note_url = flask.url_for('edit_note', note_id=next)
-    return flask.redirect(note_url)
+    return flask.render_template('edit_note.html', page_title='Create note', note_id=note.next_id())
 
 @app.route('/note/read/<int:note_id>')
 @auth.requires_auth
