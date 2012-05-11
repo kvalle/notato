@@ -35,7 +35,7 @@ def read_note(note_id):
     if not title:
         title = 'untitled note'
     html = markdown.markdown(text)
-    return flask.render_template('read_note.html', text=html, title=title, note_id=note_id)
+    return flask.render_template('read_note.html', note_text=html, note_title=title, note_id=note_id)
 
 @app.route('/note/read/<int:note_id>.raw')
 @auth.requires_auth
