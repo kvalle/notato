@@ -3,11 +3,6 @@ from functools import wraps
 import flask
 from flask import g
 import config
-from notato import app
-
-@app.before_request
-def before_request():
-    print flask.request.url
 
 def login(username, password):
     if not _check(username, password): 
