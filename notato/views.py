@@ -21,16 +21,16 @@ def login():
         username = flask.request.form['username']
         password = flask.request.form['password']
         if auth.login(username, password):
-            flask.flash('You were successfully logged in.')
+            flask.flash('You were logged in.', 'success')
             return flask.redirect(flask.url_for('index'))
         else:
-            flask.flash('Invalid username or password.')
+            flask.flash('Invalid username or password.', 'error')
     return flask.render_template('login.html', username=username)
 
 @app.route('/log-out')
 def logout():
     auth.logout()
-    flask.flash('You were successfully logged out.')
+    flask.flash('You were logged out.', 'success')
     return flask.redirect(flask.url_for('login'))
 
 @app.route('/note/')
@@ -76,7 +76,7 @@ def edit_note(note_id):
         target = flask.request.form.get('target_state','edit')
         note = Note(note_id, title, text)
         repo.save(note)
-        flask.flash('Note was successfully saved.')
+        flask.flash('Note was saved.', 'success')
     else:
         note = repo.get(note_id)
         if not note: 
@@ -93,7 +93,7 @@ def delete_note(note_id):
     if not note: 
         flask.abort(404)
     repo.delete(note.id)
-    flask.flash('Note was successfully deleted.')
+    flask.flash('Note was deleted.', 'success')
     return flask.redirect(flask.url_for('index'))
 
 @app.route('/about/')
