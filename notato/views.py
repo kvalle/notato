@@ -14,19 +14,25 @@ from notato import app
 def index():
     return flask.redirect(flask.url_for('notes'))
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/log-in', methods=['GET', 'POST'])
 def login():
     username = ""
     if flask.request.method == 'POST':
         username = flask.request.form['username']
         password = flask.request.form['password']
-        if username != app.config['USERNAME'] or password != app.config['PASSWORD']:
-            flask.flash('Invalid username or password.')
-        else:
+        if auth.check(username, password):
             flask.session['logged_in'] = True
             flask.flash('You were successfully logged in.')
             return flask.redirect(flask.url_for('index'))
+        else:
+            flask.flash('Invalid username or password.')
     return flask.render_template('login.html', username=username)
+
+@app.route('/log-out')
+def logout():
+    flask.session.pop('logged_in', None)
+    flask.flash('You were successfully logged out.')
+    return flask.redirect(flask.url_for('login'))
 
 @app.route('/note/')
 @auth.requires_auth
