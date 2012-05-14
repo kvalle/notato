@@ -20,8 +20,7 @@ def login():
     if flask.request.method == 'POST':
         username = flask.request.form['username']
         password = flask.request.form['password']
-        if auth.check(username, password):
-            flask.session['logged_in'] = True
+        if auth.login(username, password):
             flask.flash('You were successfully logged in.')
             return flask.redirect(flask.url_for('index'))
         else:
@@ -30,7 +29,7 @@ def login():
 
 @app.route('/log-out')
 def logout():
-    flask.session.pop('logged_in', None)
+    auth.logout()
     flask.flash('You were successfully logged out.')
     return flask.redirect(flask.url_for('login'))
 

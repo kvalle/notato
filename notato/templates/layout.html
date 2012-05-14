@@ -45,6 +45,15 @@
               </li>
             {% endfor %}
           </ul>
+          <ul class="nav pull-right">
+            <li>
+              {% if not g.logged_in %}
+                <a href="{{url_for('login')}}">Log in</a>
+              {% else %}
+                <a href="{{url_for('logout')}}">Log out</a>
+              {% endif %}
+            </li>
+          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
