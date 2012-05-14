@@ -1,6 +1,5 @@
 import os
 import os.path
-import config
 from flask.ext import shelve
 from notato import app
 from flask import g

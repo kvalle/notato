@@ -2,7 +2,7 @@ import hashlib
 from functools import wraps
 import flask
 from flask import g
-import config
+from notato import app
 
 def login(username, password):
     if not _check(username, password): 
@@ -14,9 +14,9 @@ def logout():
     flask.session.pop('logged_in', None)
 
 def _check(username, password):
-    if not username == config.USERNAME:
+    if not username == app.config['USERNAME']:
         return False
-    return config.PASSWORD == hashlib.sha1(password).hexdigest()
+    return app.config['PASSWORD'] == hashlib.sha1(password).hexdigest()
 
 def requires_auth(f):
     @wraps(f)
