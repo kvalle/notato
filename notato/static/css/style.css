@@ -2,3 +2,9 @@
     width: 100%;
     height: 300px;
 }
+
+pre.note {
+    border-width: 0px;
+    background: none;
+    font-family: inherit;
+}

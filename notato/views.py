@@ -52,11 +52,12 @@ def create_note():
 @auth.requires_auth
 def read_note(note_id):
     note = repo.get(note_id)
-    if not note: 
+    if not note:
         flask.abort(404)
     if not note.title:
         note.title = 'untitled note'
-    note.html = markdown.markdown(note.text)
+    if note.markdown:
+        note.html = markdown.markdown(note.text)
     return flask.render_template('read_note.html', note=note)
 
 @app.route('/note/read/<int:note_id>.raw')
@@ -74,8 +75,9 @@ def edit_note(note_id):
     if flask.request.method == 'POST':
         title = flask.request.form.get('note_title', '').strip()
         text = flask.request.form.get('note_text', '')
+        markdown = True if flask.request.form.get('markdown') else False
         target = flask.request.form.get('target_state','edit')
-        note = Note(note_id, title, text)
+        note = Note(note_id, title, text, markdown=markdown)
         repo.save(note)
         flask.flash('Note was saved.', 'success')
     else:
