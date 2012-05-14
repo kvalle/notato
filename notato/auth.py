@@ -1,10 +1,13 @@
 import hashlib
 from functools import wraps
-from flask import Response, request
 import flask
+from flask import g
 import config
 from notato import app
-from flask import g
+
+@app.before_request
+def before_request():
+    print flask.request.url
 
 def login(username, password):
     if not _check(username, password): 
@@ -25,6 +28,7 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         if not flask.session.get('logged_in', False):
             flask.flash("You must log in to view this page.")
+            flask.session['next_page'] = flask.request.url
             return flask.redirect(flask.url_for('login'))
         return f(*args, **kwargs)
     return decorated

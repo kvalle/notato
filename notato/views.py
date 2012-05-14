@@ -22,7 +22,8 @@ def login():
         password = flask.request.form['password']
         if auth.login(username, password):
             flask.flash('You were logged in.', 'success')
-            return flask.redirect(flask.url_for('index'))
+            next_page = flask.session.pop('next_page', flask.url_for('index'))
+            return flask.redirect(next_page)
         else:
             flask.flash('Invalid username or password.', 'error')
     return flask.render_template('login.html', username=username)
