@@ -1,3 +1,4 @@
+import hashlib
 from functools import wraps
 from flask import Response, request
 import flask
@@ -15,7 +16,9 @@ def logout():
     flask.session.pop('logged_in', None)
 
 def _check(username, password):
-    return username == config.USERNAME and password == config.PASSWORD
+    if not username == config.USERNAME:
+        return False
+    return config.PASSWORD == hashlib.sha1(password).hexdigest()
 
 def requires_auth(f):
     @wraps(f)
