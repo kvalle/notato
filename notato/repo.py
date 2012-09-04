@@ -31,7 +31,7 @@ def _as_data(note):
     return {'note_id': note.id, 'title':note.title, 'text':note.text, 'markdown':note.markdown}
 
 def next_id():
-    next_id = 1
-    while next_id in g.note_ids:
-        next_id += 1
-    return next_id
+    if not g.note_ids:
+        return 1
+    return max(g.note_ids) + 1
+
