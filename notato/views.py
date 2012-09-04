@@ -79,7 +79,7 @@ def edit_note(note_id):
         markdown = True if flask.request.form.get('markdown') else False
         target = flask.request.form.get('target_state','edit')
         note = Note(note_id, title, text, markdown=markdown)
-        repo.save(note)
+        repo.insert(note)
         flask.flash('Note was saved.', 'success')
     else:
         note = repo.get(note_id)
@@ -90,7 +90,7 @@ def edit_note(note_id):
     else:
         return flask.render_template('edit_note.html', page_title='Edit note', note=note)
 
-@app.route('/note/delete/<int:note_id>')
+@app.route('/note/delete/<string:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
     note = repo.get(note_id)
