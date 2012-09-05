@@ -6,7 +6,7 @@ class Note:
         self.markdown = markdown
 
     def as_data(self):
-        return {'note_id': self.id, 
+        return {'_id': self.id, 
                 'title': self.title, 
                 'text': self.text, 
                 'markdown': self.markdown}

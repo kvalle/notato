@@ -11,17 +11,17 @@ class MongoRepo():
         self.mongo = con[app.config['DATABASE']]
         
     def get_ids(self):
-        return [n['note_id'] for n in self.mongo.notes.find()]
+        return [n['_id'] for n in self.mongo.notes.find()]
 
     def insert(self, note):
         return self.mongo.notes.insert(note.as_data())
 
     def get(self, note_id):
-        d = self.mongo.notes.find_one({'note_id':note_id})
-        return Note(d['note_id'], d['title'], d['text'], d['markdown'])
+        d = self.mongo.notes.find_one({'_id': note_id})
+        return Note(d['_id'], d['title'], d['text'], d['markdown'])
 
     def delete(self, note_id):
-        self.mongo.notes.remove({'note_id':note_id})
+        self.mongo.notes.remove({'_id': note_id})
 
     def clear_all(self):
         self.mongo.notes.drop()
