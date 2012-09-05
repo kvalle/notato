@@ -2,7 +2,6 @@ from flask import g
 import flask
 import markdown
 
-import config
 import auth
 import repo
 
