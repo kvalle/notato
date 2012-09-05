@@ -1,6 +1,3 @@
-import os
-import os.path
-from flask.ext import shelve
 from pymongo import Connection
 from notato import app
 from flask import g

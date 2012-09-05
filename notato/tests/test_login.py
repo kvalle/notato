@@ -1,7 +1,4 @@
-import os
 import unittest
-import tempfile
-from flask.ext import shelve
 from notato import app
 import hashlib
 
@@ -10,21 +7,13 @@ class NotatoTestCase(unittest.TestCase):
     def setUp(self):
         self.username = 'admin'
         self.password = 'password'
-        app.config['SHELVE_FILENAME'] = "notato/storage/test.db"
         app.config['TESTING'] = True
         app.config['USERNAME'] = self.username
         app.config['PASSWORD'] = hashlib.sha1(self.password).hexdigest()
         self.app = app.test_client()
 
     def tearDown(self):
-        db = app.config['SHELVE_FILENAME']
-        if os.path.isfile(db):
-            os.unlink(db)
-
-    def test_empty_db(self):
-        self.login()
-        response = self.app.get('/', follow_redirects=True)
-        assert 'There are no notes yet' in response.data
+        pass
 
     def test_login_required(self):
         response = self.app.get('/', follow_redirects=True)
