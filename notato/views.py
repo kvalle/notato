@@ -79,7 +79,7 @@ def edit_note(note_id):
         markdown = True if flask.request.form.get('markdown') else False
         target = flask.request.form.get('target_state','edit')
         note = Note(note_id, title, text, markdown=markdown)
-        g.repo.insert(note)
+        g.repo.save(note)
         flask.flash('Note was saved.', 'success')
     else:
         note = g.repo.get(note_id)
