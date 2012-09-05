@@ -12,9 +12,6 @@ class NotatoTestCase(unittest.TestCase):
         app.config['PASSWORD'] = hashlib.sha1(self.password).hexdigest()
         self.app = app.test_client()
 
-    def tearDown(self):
-        pass
-
     def test_login_required(self):
         response = self.app.get('/', follow_redirects=True)
         assert '<h1>Log in</h1>' in response.data
