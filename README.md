@@ -1,5 +1,21 @@
 ### Notato
 
 A (very) simple CRUD webapp for managing small personal text notes.
-Based on [Flask](http://flask.pocoo.org/), [Twitter Bootstrap](http://twitter.github.com/bootstrap/), [Shelve database](http://docs.python.org/library/shelve.html) and [Markdown](http://daringfireball.net/projects/markdown/).
-Mostly something I wrote to teach myself Flask.
+Sort of like my personal notebook available from anywhere.
+Mostly something I wrote to teach myself [Flask](http://flask.pocoo.org/), [Twitter Bootstrap](http://twitter.github.com/bootstrap/) and [MongoDB](http://www.mongodb.org).
+
+## Requirements
+
+```bash
+$ pip freeze
+Flask==0.8
+Flask-Shelve==0.1.1
+Jinja2==2.6
+Markdown==2.1.1
+Werkzeug==0.8.3
+elementtree==1.2.7-20070827-preview
+icalendar==3.0.1b2
+pymongo==2.2.1
+pytz==2012d
+wsgiref==0.1.2
+```
