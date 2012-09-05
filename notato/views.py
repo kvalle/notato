@@ -93,10 +93,7 @@ def edit_note(note_id):
 @app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
-    note = g.repo.get(note_id)
-    if not note: 
-        flask.abort(404)
-    g.repo.delete(note.id)
+    g.repo.delete(note_id)
     flask.flash('Note was deleted.', 'success')
     return flask.redirect(flask.url_for('index'))
 
