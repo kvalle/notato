@@ -90,7 +90,7 @@ def edit_note(note_id):
     else:
         return flask.render_template('edit_note.html', page_title='Edit note', note=note)
 
-@app.route('/note/delete/<string:note_id>')
+@app.route('/note/delete/<int:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
     note = g.repo.get(note_id)
