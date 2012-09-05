@@ -7,9 +7,9 @@ from notato.models import Note
 @app.before_request
 def before_request():
     g.mongo = Connection().notato
-    g.note_ids = _get_ids()
+    g.note_ids = get_ids()
 
-def _get_ids():
+def get_ids():
     return [n['note_id'] for n in g.mongo.notes.find()]
 
 def insert(note):
