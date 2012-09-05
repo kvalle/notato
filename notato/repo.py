@@ -13,8 +13,8 @@ class MongoRepo():
     def get_ids(self):
         return [n['_id'] for n in self.mongo.notes.find()]
 
-    def insert(self, note):
-        return self.mongo.notes.insert(note.as_data())
+    def save(self, note):
+        return self.mongo.notes.save(note.as_data())
 
     def get(self, note_id):
         d = self.mongo.notes.find_one({'_id': note_id})
