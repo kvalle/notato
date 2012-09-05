@@ -14,8 +14,7 @@ class MongoRepo():
         return [n['note_id'] for n in self.mongo.notes.find()]
 
     def insert(self, note):
-        _id = self.mongo.notes.insert(_as_data(note))
-        return _id
+        return self.mongo.notes.insert(_as_data(note))
 
     def get(self, note_id):
         d = self.mongo.notes.find_one({'note_id':note_id})
