@@ -14,7 +14,7 @@ class MongoRepo():
         return [n['note_id'] for n in self.mongo.notes.find()]
 
     def insert(self, note):
-        return self.mongo.notes.insert(_as_data(note))
+        return self.mongo.notes.insert(note.as_data())
 
     def get(self, note_id):
         d = self.mongo.notes.find_one({'note_id':note_id})
@@ -29,9 +29,6 @@ class MongoRepo():
 @app.before_request
 def before_request():
     g.repo = MongoRepo()
-
-def _as_data(note):
-    return {'note_id': note.id, 'title':note.title, 'text':note.text, 'markdown':note.markdown}
 
 def next_id():
     if not g.repo.get_ids():

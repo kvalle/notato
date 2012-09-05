@@ -5,3 +5,8 @@ class Note:
         self.text = text
         self.markdown = markdown
 
+    def as_data(self):
+        return {'note_id': self.id, 
+                'title': self.title, 
+                'text': self.text, 
+                'markdown': self.markdown}
