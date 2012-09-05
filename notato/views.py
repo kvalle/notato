@@ -36,8 +36,9 @@ def logout():
 @app.route('/note/')
 @auth.requires_auth
 def notes():
-    if g.note_ids:
-        return flask.redirect(flask.url_for('read_note', note_id=g.note_ids[0]))
+    ids = g.repo.get_ids()
+    if ids:
+        return flask.redirect(flask.url_for('read_note', note_id=ids[0]))
     else:
         return flask.redirect(flask.url_for('create_note'))
 
@@ -50,7 +51,7 @@ def create_note():
 @app.route('/note/read/<int:note_id>')
 @auth.requires_auth
 def read_note(note_id):
-    note = repo.get(note_id)
+    note = g.repo.get(note_id)
     if not note:
         flask.abort(404)
     if not note.title:
@@ -62,7 +63,7 @@ def read_note(note_id):
 @app.route('/note/read/<int:note_id>.raw')
 @auth.requires_auth
 def read_note_raw(note_id):
-    note = repo.get(note_id)
+    note = g.repo.get(note_id)
     if not note: 
         flask.abort(404)
     content = note.title + "\n\n" + note.text
@@ -78,10 +79,10 @@ def edit_note(note_id):
         markdown = True if flask.request.form.get('markdown') else False
         target = flask.request.form.get('target_state','edit')
         note = Note(note_id, title, text, markdown=markdown)
-        repo.insert(note)
+        g.repo.insert(note)
         flask.flash('Note was saved.', 'success')
     else:
-        note = repo.get(note_id)
+        note = g.repo.get(note_id)
         if not note: 
             flask.abort(404)
     if target == 'read':
@@ -92,10 +93,10 @@ def edit_note(note_id):
 @app.route('/note/delete/<string:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
-    note = repo.get(note_id)
+    note = g.repo.get(note_id)
     if not note: 
         flask.abort(404)
-    repo.delete(note.id)
+    g.repo.delete(note.id)
     flask.flash('Note was deleted.', 'success')
     return flask.redirect(flask.url_for('index'))
 

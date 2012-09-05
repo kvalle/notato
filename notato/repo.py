@@ -28,29 +28,13 @@ class MongoRepo():
 
 @app.before_request
 def before_request():
-    g.mongo = Connection().notato
     g.repo = MongoRepo()
-    g.note_ids = get_ids()
 
 def _as_data(note):
     return {'note_id': note.id, 'title':note.title, 'text':note.text, 'markdown':note.markdown}
 
-def get_ids():
-    return g.repo.get_ids()
-
-def insert(note):
-    _id = g.repo.insert(note)
-    g.note_ids.append(note.id)
-
-def get(note_id):
-    return g.repo.get(note_id)
-
-def delete(note_id):
-    g.repo.delete(note_id)
-    g.note_ids.remove(note_id)
-
 def next_id():
-    if not g.note_ids:
+    if not g.repo.get_ids():
         return 1
-    return max(g.note_ids) + 1
+    return max(g.repo.get_ids()) + 1
 
