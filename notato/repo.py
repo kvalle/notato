@@ -12,6 +12,10 @@ class MongoRepo():
         
     def get_ids(self):
         return [n['_id'] for n in self.mongo.notes.find()]
+        
+    def get_title_by_id(self, note_id):
+        d = self.mongo.notes.find_one({'_id': note_id})
+        return d['title']
 
     def save(self, note):
         return self.mongo.notes.save(note.as_data())

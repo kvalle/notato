@@ -11,7 +11,7 @@
                 <li class="nav-header">List of notes</li>
                 {% for id in g.repo.get_ids() %}
                     <li {% if note and id==note.id %}class="active"{% endif %}>
-                      <a href="{{url_for('read_note', note_id=id)}}">Note {{id}}</a>
+                      <a href="{{url_for('read_note', note_id=id)}}">{{ g.repo.get_title_by_id(id)}}</a>
                     </li>
                 {% endfor %}
               {% else %}
