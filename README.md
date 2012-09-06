@@ -1,10 +1,10 @@
-### Notato
+## Notato
 
 A (very) simple CRUD webapp for managing small personal text notes.
 Sort of like my personal notebook available from anywhere.
 Mostly something I wrote to teach myself [Flask](http://flask.pocoo.org/), [Twitter Bootstrap](http://twitter.github.com/bootstrap/) and [MongoDB](http://www.mongodb.org).
 
-## Requirements
+### Requirements
 
 ```bash
 $ pip freeze
