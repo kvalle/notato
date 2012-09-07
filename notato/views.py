@@ -8,47 +8,15 @@ import repo
 from notato.models import Note
 from notato import app
 
-@app.route('/')
-@auth.requires_auth
-def index():
-    return flask.redirect(flask.url_for('notes'))
-
-@app.route('/log-in', methods=['GET', 'POST'])
-def login():
-    username = ""
-    if flask.request.method == 'POST':
-        username = flask.request.form['username']
-        password = flask.request.form['password']
-        if auth.login(username, password):
-            flask.flash('You were logged in.', 'success')
-            next_page = flask.session.pop('next_page', flask.url_for('index'))
-            return flask.redirect(next_page)
-        else:
-            flask.flash('Invalid username or password.', 'error')
-    return flask.render_template('login.html', username=username)
-
-@app.route('/log-out')
-def logout():
-    auth.logout()
-    flask.flash('You were logged out.', 'success')
-    return flask.redirect(flask.url_for('login'))
-
-@app.route('/note/')
-@auth.requires_auth
-def notes():
-    ids = g.repo.get_ids()
-    if ids:
-        return flask.redirect(flask.url_for('read_note', note_id=ids[0]))
-    else:
-        return flask.redirect(flask.url_for('create_note'))
-
-@app.route('/note/create/')
+@app.route('/', endpoint='index')
+@app.route('/notes/', endpoint='notes')
+@app.route('/notes/create/')
 @auth.requires_auth
 def create_note():
     note = Note(note_id=repo.next_id())
     return flask.render_template('edit_note.html', page_title='Create note', note=note)
 
-@app.route('/note/read/<int:note_id>')
+@app.route('/notes/read/<int:note_id>')
 @auth.requires_auth
 def read_note(note_id):
     note = g.repo.get(note_id)
@@ -60,7 +28,7 @@ def read_note(note_id):
         note.html = markdown.markdown(note.text)
     return flask.render_template('read_note.html', note=note)
 
-@app.route('/note/read/<int:note_id>.raw')
+@app.route('/notes/read/<int:note_id>.raw')
 @auth.requires_auth
 def read_note_raw(note_id):
     note = g.repo.get(note_id)
@@ -69,7 +37,7 @@ def read_note_raw(note_id):
     content = note.title + "\n\n" + note.text
     return flask.Response(content, 200, {'content-type': 'text/plain'})
 
-@app.route('/note/edit/<int:note_id>', methods=['GET', 'POST'])
+@app.route('/notes/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
 def edit_note(note_id):
     target = 'edit'
@@ -90,7 +58,7 @@ def edit_note(note_id):
     else:
         return flask.render_template('edit_note.html', page_title='Edit note', note=note)
 
-@app.route('/note/delete/<int:note_id>')
+@app.route('/notes/delete/<int:note_id>')
 @auth.requires_auth
 def delete_note(note_id):
     g.repo.delete(note_id)
@@ -105,4 +73,24 @@ def about():
 @app.errorhandler(404)
 def page_not_found(e):
     return flask.render_template('404.html'), 404
+    
+@app.route('/log-in', methods=['GET', 'POST'])
+def login():
+    username = ""
+    if flask.request.method == 'POST':
+        username = flask.request.form['username']
+        password = flask.request.form['password']
+        if auth.login(username, password):
+            flask.flash('You were logged in.', 'success')
+            next_page = flask.session.pop('next_page', flask.url_for('index'))
+            return flask.redirect(next_page)
+        else:
+            flask.flash('Invalid username or password.', 'error')
+    return flask.render_template('login.html', username=username)
+
+@app.route('/log-out')
+def logout():
+    auth.logout()
+    flask.flash('You were logged out.', 'success')
+    return flask.redirect(flask.url_for('login'))
 
