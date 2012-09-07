@@ -15,7 +15,8 @@ class MongoRepo():
         
     def get_title_by_id(self, note_id):
         d = self.mongo.notes.find_one({'_id': note_id})
-        return d['title']
+        note = Note(note_id, title=d['title'])
+        return note.title_or_placeholder
 
     def save(self, note):
         return self.mongo.notes.save(note.as_data())

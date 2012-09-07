@@ -1,13 +1,13 @@
 {% extends "notes.html" %}
 
-{% block title %}{{ note.title }}{% endblock %}
+{% block title %}{{ note.title_or_placeholder }}{% endblock %}
 {% block note_content %}
     <div class="page-header">
-        <h1>{{note.title}}</h1>
+        <h1>{{note.title_or_placeholder}}</h1>
     </div>
     {% if note.markdown %}
         {% autoescape false %}
-        {{note.content}}
+            {{note.content}}
         {% endautoescape %}
     {% else %}
         <pre class="note">{{note.content}}</pre>

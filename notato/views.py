@@ -22,8 +22,6 @@ def read_note(note_id):
     note = g.repo.get(note_id)
     if not note:
         flask.abort(404)
-    if not note.title:
-        note.title = 'untitled note'
     return flask.render_template('read_note.html', note=note)
 
 @app.route('/notes/read/<int:note_id>.raw')
