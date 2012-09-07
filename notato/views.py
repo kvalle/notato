@@ -24,8 +24,6 @@ def read_note(note_id):
         flask.abort(404)
     if not note.title:
         note.title = 'untitled note'
-    if note.markdown:
-        note.html = markdown.markdown(note.text)
     return flask.render_template('read_note.html', note=note)
 
 @app.route('/notes/read/<int:note_id>.raw')
@@ -34,7 +32,7 @@ def read_note_raw(note_id):
     note = g.repo.get(note_id)
     if not note: 
         flask.abort(404)
-    content = note.title + "\n\n" + note.text
+    content = "# " + note.title + "\n\n" + note.text
     return flask.Response(content, 200, {'content-type': 'text/plain'})
 
 @app.route('/notes/edit/<int:note_id>', methods=['GET', 'POST'])
