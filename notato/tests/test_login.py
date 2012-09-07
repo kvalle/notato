@@ -2,7 +2,7 @@ import unittest
 from notato import app
 import hashlib
 
-class NotatoTestCase(unittest.TestCase):
+class LoginTests(unittest.TestCase):
 
     def setUp(self):
         self.username = 'admin'

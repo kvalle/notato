@@ -1,7 +1,7 @@
 import unittest
 from notato.models import Note
 
-class NotatoTestCase(unittest.TestCase):
+class NoteTests(unittest.TestCase):
 
     def setUp(self):
         self.note = Note(1, text="## foo")

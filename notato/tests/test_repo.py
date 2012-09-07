@@ -5,7 +5,7 @@ from notato.models import Note
 from notato import repo
 from notato import app
 
-class NotatoTestCase(unittest.TestCase):
+class MongoRepoTests(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True
