@@ -2,9 +2,10 @@ from flask import g
 import flask
 import markdown
 
-import auth
-import repo
+import notato.auth as auth
+import notato.repo as repo
 
+from notato.auth import requires_auth
 from notato.models import Note
 from notato import app
 

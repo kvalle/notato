@@ -8,4 +8,4 @@ app.config.from_object(config)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-import notato.views
+from notato.views import general
