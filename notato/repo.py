@@ -1,5 +1,3 @@
-from flask import g
-from bson.objectid import ObjectId
 from pymongo import Connection
 from notato.models import Note
 
