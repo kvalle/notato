@@ -15,6 +15,8 @@ class MongoRepo():
         
     def get_title_by_id(self, note_id):
         d = self.mongo.notes.find_one({'_id': note_id})
+        if not d:
+            return None
         note = Note(note_id, title=d['title'])
         return note.title_or_placeholder
 
@@ -23,6 +25,8 @@ class MongoRepo():
 
     def get(self, note_id):
         d = self.mongo.notes.find_one({'_id': note_id})
+        if not d:
+            return None
         return Note(d['_id'], d['title'], d['text'], d['markdown'])
 
     def delete(self, note_id):
