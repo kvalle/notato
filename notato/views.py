@@ -14,7 +14,7 @@ from notato import app
 @auth.requires_auth
 def create_note():
     note = Note(note_id=repo.next_id())
-    return flask.render_template('edit_note.html', page_title='Create note', note=note)
+    return flask.render_template('create_note.html', note=note)
 
 @app.route('/notes/read/<int:note_id>')
 @auth.requires_auth
@@ -33,6 +33,7 @@ def read_note_raw(note_id):
     content = "# " + note.title + "\n\n" + note.text
     return flask.Response(content, 200, {'content-type': 'text/plain'})
 
+@app.route('/notes/edit/', defaults={'note_id': None})
 @app.route('/notes/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
 def edit_note(note_id):
@@ -42,19 +43,20 @@ def edit_note(note_id):
         flask.abort(404)
 
     if flask.request.method == 'POST':
+        form = flask.request.form
         if not note:
             note = Note(note_id)
-        note.title = flask.request.form.get('note_title', '').strip()
-        note.text = flask.request.form.get('note_text', '')
-        note.markdown = True if flask.request.form.get('markdown') else False
+        note.title = form.get('note_title', '').strip()
+        note.text = form.get('note_text', '')
+        note.markdown = True if form.get('markdown') else False
         g.repo.save(note)
         flask.flash('Note was saved.', 'success')
         
-        target = flask.request.form.get('target_state','edit')
+        target = form.get('target_state','edit')
         if target == 'read':
             return flask.redirect(flask.url_for('read_note', note_id=note.id))
 
-    return flask.render_template('edit_note.html', page_title='Edit note', note=note)
+    return flask.render_template('edit_note.html', note=note)
 
 @app.route('/notes/delete/<int:note_id>')
 @auth.requires_auth

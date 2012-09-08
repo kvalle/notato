@@ -13,7 +13,11 @@ class Note:
     
     @property
     def title_or_placeholder(self):
-        return self.title if self.title else "untitled note %d" % self.id
+        if self.title:
+            return self.title 
+        if self.id:
+            return "untitled note %d" % self.id
+        return "untitled note"
 
     def as_data(self):
         return {'_id': self.id, 
