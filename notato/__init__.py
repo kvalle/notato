@@ -9,3 +9,4 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 from notato.views import general
+from notato.views import notes
