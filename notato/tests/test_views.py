@@ -15,7 +15,7 @@ class EditNoteTests(unittest.TestCase):
         app.config['PASSWORD'] = hashlib.sha1(self.password).hexdigest()
         app.config['DATABASE'] = 'notato_test'
         self.app = app.test_client()
-        self.repo = repo.MongoRepo()
+        self.repo = repo.MongoRepo('notato_test')
         self.repo.clear_all()
         self.login()
         

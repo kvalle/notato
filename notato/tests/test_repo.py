@@ -10,7 +10,7 @@ class MongoRepoTests(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         app.config['DATABASE'] = 'notato_test'
-        self.repo = repo.MongoRepo()
+        self.repo = repo.MongoRepo('notato_test')
         self.repo.clear_all()
 
     def test_save_note(self):

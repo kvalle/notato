@@ -1,4 +1,3 @@
-from notato import app
 from flask import g
 from bson.objectid import ObjectId
 from pymongo import Connection
@@ -6,9 +5,9 @@ from notato.models import Note
 
 class MongoRepo():
 
-    def __init__(self):
+    def __init__(self, database):
         con = Connection()
-        self.mongo = con[app.config['DATABASE']]
+        self.mongo = con[database]
         
     def get_ids(self):
         return [n['_id'] for n in self.mongo.notes.find()]
@@ -41,8 +40,4 @@ class MongoRepo():
         if not self.get_ids():
             return 1
         return max(self.get_ids()) + 1
-
-@app.before_request
-def before_request():
-    g.repo = MongoRepo()
 
