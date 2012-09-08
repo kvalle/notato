@@ -10,7 +10,6 @@ class MongoRepoTests(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         app.config['DATABASE'] = 'notato_test'
-        self.app = app.test_client()
         self.repo = repo.MongoRepo()
         self.repo.clear_all()
 
