@@ -36,23 +36,25 @@ def read_note_raw(note_id):
 @app.route('/notes/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
 def edit_note(note_id):
-    target = 'edit'
+    note = g.repo.get(note_id)
+    
+    if flask.request.method == 'GET' and not note: 
+        flask.abort(404)
+
     if flask.request.method == 'POST':
-        title = flask.request.form.get('note_title', '').strip()
-        text = flask.request.form.get('note_text', '')
-        markdown = True if flask.request.form.get('markdown') else False
-        target = flask.request.form.get('target_state','edit')
-        note = Note(note_id, title, text, markdown=markdown)
+        if not note:
+            note = Note(note_id)
+        note.title = flask.request.form.get('note_title', '').strip()
+        note.text = flask.request.form.get('note_text', '')
+        note.markdown = True if flask.request.form.get('markdown') else False
         g.repo.save(note)
         flask.flash('Note was saved.', 'success')
-    else:
-        note = g.repo.get(note_id)
-        if not note: 
-            flask.abort(404)
-    if target == 'read':
-        return flask.redirect(flask.url_for('read_note', note_id=note.id))
-    else:
-        return flask.render_template('edit_note.html', page_title='Edit note', note=note)
+        
+        target = flask.request.form.get('target_state','edit')
+        if target == 'read':
+            return flask.redirect(flask.url_for('read_note', note_id=note.id))
+
+    return flask.render_template('edit_note.html', page_title='Edit note', note=note)
 
 @app.route('/notes/delete/<int:note_id>')
 @auth.requires_auth
