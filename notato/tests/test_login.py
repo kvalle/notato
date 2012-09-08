@@ -18,12 +18,12 @@ class LoginTests(unittest.TestCase):
         
     def test_login_works(self):
         self.login()
-        response = self.app.get('/', follow_redirects=True)
+        response = self.app.get('/')
         assert 'Log out' in response.data
 
     def login(self):
         data = dict(username=self.username, password=self.password)
-        return self.app.post('/log-in', data=data, follow_redirects=True)
+        return self.app.post('/log-in', data=data)
 
 if __name__ == '__main__':
     unittest.main()
