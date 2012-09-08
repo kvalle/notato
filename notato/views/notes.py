@@ -40,7 +40,7 @@ def read_note_raw(note_id):
     note = g.repo.get(note_id)
     if not note: 
         flask.abort(404)
-    content = "# " + note.title + "\n\n" + note.text
+    content = "# " + note.title_or_placeholder + "\n\n" + note.text
     return flask.Response(content, 200, {'content-type': 'text/plain'})
 
 @app.route('/notes/edit/<int:note_id>', methods=['GET', 'POST'])
