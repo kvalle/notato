@@ -1,21 +1,11 @@
 import unittest
-from notato import app
-from notato import repo
 from notato.models import Note
-import hashlib
-from flask import g
+from notato.tests.base import NotatoTestCase
 
-class EditNoteTests(unittest.TestCase):
+class EditNoteTests(unittest.TestCase, NotatoTestCase):
 
     def setUp(self):
-        self.username = 'admin'
-        self.password = 'password'
-        app.config['TESTING'] = True
-        app.config['USERNAME'] = self.username
-        app.config['PASSWORD'] = hashlib.sha1(self.password).hexdigest()
-        app.config['DATABASE'] = 'notato_test'
-        self.app = app.test_client()
-        self.repo = repo.MongoRepo('notato_test')
+        self.commonSetUp()
         self.repo.clear_all()
         self.login()
         
@@ -41,9 +31,5 @@ class EditNoteTests(unittest.TestCase):
         title = self.repo.get_title_by_id(1).encode('ascii')
         assert "<h1>%s</h1>" % title in response.data
     
-    def login(self):
-        data = dict(username=self.username, password=self.password)
-        return self.app.post('/log-in', data=data)
-
 if __name__ == '__main__':
     unittest.main()

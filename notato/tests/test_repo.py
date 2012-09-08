@@ -1,16 +1,11 @@
 import unittest
-from bson.objectid import ObjectId
-from pymongo import Connection
 from notato.models import Note
-from notato import repo
-from notato import app
+from notato.tests.base import NotatoTestCase
 
-class MongoRepoTests(unittest.TestCase):
+class MongoRepoTests(unittest.TestCase, NotatoTestCase):
 
     def setUp(self):
-        app.config['TESTING'] = True
-        app.config['DATABASE'] = 'notato_test'
-        self.repo = repo.MongoRepo('notato_test')
+        self.commonSetUp()
         self.repo.clear_all()
 
     def test_save_note(self):
@@ -50,6 +45,4 @@ class MongoRepoTests(unittest.TestCase):
         
 if __name__ == '__main__':
     unittest.main()
-    
-
 
