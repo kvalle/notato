@@ -80,10 +80,6 @@ def delete_note(note_id):
 def about():
     return flask.render_template('about.html')
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return flask.render_template('404.html'), 404
-    
 @app.route('/log-in', methods=['GET', 'POST'])
 def login():
     username = ""
