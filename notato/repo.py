@@ -46,5 +46,3 @@ class MongoRepo():
 def before_request():
     g.repo = MongoRepo()
 
-def next_id():
-    return g.repo.next_id()
