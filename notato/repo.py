@@ -21,6 +21,8 @@ class MongoRepo():
         return note.title_or_placeholder
 
     def save(self, note):
+        if not note.id:
+            note.id = self.next_id()
         return self.mongo.notes.save(note.as_data())
 
     def get(self, note_id):
@@ -34,13 +36,15 @@ class MongoRepo():
 
     def clear_all(self):
         self.mongo.notes.drop()
+        
+    def next_id(self):
+        if not self.get_ids():
+            return 1
+        return max(self.get_ids()) + 1
 
 @app.before_request
 def before_request():
     g.repo = MongoRepo()
 
 def next_id():
-    if not g.repo.get_ids():
-        return 1
-    return max(g.repo.get_ids()) + 1
-
+    return g.repo.next_id()

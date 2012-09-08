@@ -29,11 +29,13 @@ class EditNoteTests(unittest.TestCase):
         assert 404 == response.status_code
 
     def test_post_to_save_note(self):
+        self.repo.save(Note(1))
         data = dict(target_state='edit')
         response = self.app.post('/notes/edit/1', follow_redirects=True)
         assert "<h1>Edit note</h1>" in response.data
 
     def test_post_to_save_and_view_note(self):
+        self.repo.save(Note(1))
         data = dict(target_state="read", note_title="my title")
         response = self.app.post('/notes/edit/1', data=data, follow_redirects=True)
         title = self.repo.get_title_by_id(1).encode('ascii')

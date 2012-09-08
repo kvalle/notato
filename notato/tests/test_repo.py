@@ -21,13 +21,13 @@ class MongoRepoTests(unittest.TestCase):
         assert 1 == len(ids)
         
     def test_get_ids(self):
-        ids = range(3)
+        ids = range(1,4)
         for i in ids:
             self.repo.save(Note(i))
         assert ids == self.repo.get_ids()
         
     def test_save_multiple_notes(self):
-        new_ids = range(4)
+        new_ids = range(1,4)
         for i in new_ids:
             note = Note(i)
             self.repo.save(note)

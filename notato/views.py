@@ -15,7 +15,7 @@ from notato import app
 def create_note():
     if flask.request.method == 'POST':
         form = flask.request.form
-        note = Note(repo.next_id())
+        note = Note()
         note.title = form.get('note_title', '').strip()
         note.text = form.get('note_text', '')
         note.markdown = True if form.get('markdown') else False
@@ -50,11 +50,12 @@ def read_note_raw(note_id):
 @auth.requires_auth
 def edit_note(note_id):
     note = g.repo.get(note_id)
+    if not note:
+        flask.abort(404)
     
     if flask.request.method == 'POST':
-        if not note:
-            note = Note(note_id)
         form = flask.request.form
+        note = Note(note_id)
         note.title = form.get('note_title', '').strip()
         note.text = form.get('note_text', '')
         note.markdown = True if form.get('markdown') else False
@@ -64,9 +65,6 @@ def edit_note(note_id):
         target = form.get('target_state','edit')
         if target == 'read':
             return flask.redirect(flask.url_for('read_note', note_id=note.id))
-    else:
-        if not note: 
-            flask.abort(404)
 
     return flask.render_template('edit_note.html', note=note)
 
