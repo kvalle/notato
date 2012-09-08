@@ -1,12 +1,7 @@
-from flask import g
 import flask
-import markdown
+from flask import g
 
 import notato.auth as auth
-import notato.repo as repo
-
-from notato.auth import requires_auth
-from notato.models import Note
 from notato import app
 
 @app.route('/about/')

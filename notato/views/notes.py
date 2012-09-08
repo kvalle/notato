@@ -1,9 +1,5 @@
-from flask import g
 import flask
-import markdown
-
-import notato.auth as auth
-import notato.repo as repo
+from flask import g
 
 from notato.auth import requires_auth
 from notato.models import Note
@@ -12,7 +8,7 @@ from notato import app
 @app.route('/', endpoint='index')
 @app.route('/notes/', endpoint='notes')
 @app.route('/notes/create/', methods=['GET', 'POST'])
-@auth.requires_auth
+@requires_auth
 def create_note():
     if flask.request.method == 'POST':
         form = flask.request.form
@@ -31,7 +27,7 @@ def create_note():
     return flask.render_template('create_note.html')
 
 @app.route('/notes/read/<int:note_id>')
-@auth.requires_auth
+@requires_auth
 def read_note(note_id):
     note = g.repo.get(note_id)
     if not note:
@@ -39,7 +35,7 @@ def read_note(note_id):
     return flask.render_template('read_note.html', note=note)
 
 @app.route('/notes/read/<int:note_id>.raw')
-@auth.requires_auth
+@requires_auth
 def read_note_raw(note_id):
     note = g.repo.get(note_id)
     if not note: 
@@ -48,7 +44,7 @@ def read_note_raw(note_id):
     return flask.Response(content, 200, {'content-type': 'text/plain'})
 
 @app.route('/notes/edit/<int:note_id>', methods=['GET', 'POST'])
-@auth.requires_auth
+@requires_auth
 def edit_note(note_id):
     note = g.repo.get(note_id)
     if not note:
@@ -70,8 +66,9 @@ def edit_note(note_id):
     return flask.render_template('edit_note.html', note=note)
 
 @app.route('/notes/delete/<int:note_id>')
-@auth.requires_auth
+@requires_auth
 def delete_note(note_id):
     g.repo.delete(note_id)
     flask.flash('Note was deleted.', 'success')
     return flask.redirect(flask.url_for('index'))
+
