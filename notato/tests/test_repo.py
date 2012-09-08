@@ -6,7 +6,6 @@ class MongoRepoTests(unittest.TestCase, NotatoTestCase):
 
     def setUp(self):
         self.commonSetUp()
-        self.repo.clear_all()
 
     def test_save_note(self):
         note = Note(1)

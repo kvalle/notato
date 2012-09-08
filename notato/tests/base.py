@@ -6,12 +6,14 @@ class NotatoTestCase():
     def commonSetUp(self):
         self.username = 'admin'
         self.password = 'password'
+        database = 'notato_test'
         app.config['TESTING'] = True
         app.config['USERNAME'] = self.username
         app.config['PASSWORD'] = hashlib.sha1(self.password).hexdigest()
-        app.config['DATABASE'] = 'notato_test'
+        app.config['DATABASE'] = database
         self.app = app.test_client()
-        self.repo = repo.MongoRepo('notato_test')
+        self.repo = repo.MongoRepo(database)
+        self.repo.clear_all()
 
     def login(self):
         data = dict(username=self.username, password=self.password)

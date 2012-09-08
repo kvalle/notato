@@ -6,7 +6,6 @@ class EditNoteTests(unittest.TestCase, NotatoTestCase):
 
     def setUp(self):
         self.commonSetUp()
-        self.repo.clear_all()
         self.login()
         
     def test_get_edit_page(self):
