@@ -5,7 +5,6 @@ import notato.auth as auth
 from notato import app
 
 @app.route('/about/')
-@auth.requires_auth
 def about():
     return flask.render_template('about.html')
 
