@@ -10,11 +10,24 @@ from notato import app
 
 @app.route('/', endpoint='index')
 @app.route('/notes/', endpoint='notes')
-@app.route('/notes/create/')
+@app.route('/notes/create/', methods=['GET', 'POST'])
 @auth.requires_auth
 def create_note():
-    note = Note(note_id=repo.next_id())
-    return flask.render_template('create_note.html', note=note)
+    if flask.request.method == 'POST':
+        form = flask.request.form
+        note = Note(repo.next_id())
+        note.title = form.get('note_title', '').strip()
+        note.text = form.get('note_text', '')
+        note.markdown = True if form.get('markdown') else False
+        g.repo.save(note)
+        flask.flash('Created new note.', 'success')
+        
+        target = form.get('target_state','edit')
+        if target == 'read':
+            return flask.redirect(flask.url_for('read_note', note_id=note.id))
+        return flask.render_template('edit_note.html', note=note)
+
+    return flask.render_template('create_note.html')
 
 @app.route('/notes/read/<int:note_id>')
 @auth.requires_auth
@@ -33,19 +46,15 @@ def read_note_raw(note_id):
     content = "# " + note.title + "\n\n" + note.text
     return flask.Response(content, 200, {'content-type': 'text/plain'})
 
-@app.route('/notes/edit/', defaults={'note_id': None})
 @app.route('/notes/edit/<int:note_id>', methods=['GET', 'POST'])
 @auth.requires_auth
 def edit_note(note_id):
     note = g.repo.get(note_id)
     
-    if flask.request.method == 'GET' and not note: 
-        flask.abort(404)
-
     if flask.request.method == 'POST':
-        form = flask.request.form
         if not note:
             note = Note(note_id)
+        form = flask.request.form
         note.title = form.get('note_title', '').strip()
         note.text = form.get('note_text', '')
         note.markdown = True if form.get('markdown') else False
@@ -55,6 +64,9 @@ def edit_note(note_id):
         target = form.get('target_state','edit')
         if target == 'read':
             return flask.redirect(flask.url_for('read_note', note_id=note.id))
+    else:
+        if not note: 
+            flask.abort(404)
 
     return flask.render_template('edit_note.html', note=note)
 
