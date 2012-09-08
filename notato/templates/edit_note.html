@@ -7,7 +7,7 @@
         <h1>{{page_title}}</h1>
     </div>
     <form class="note-form" action="{{ url_for('edit_note', note_id=note.id) }}" method="POST">
-        <input type="text" name="note_title" value="{{note.title}}" placeholder="{{note.title_or_placeholder}}" />
+        <input type="text" name="note_title" value="{{note.title}}" placeholder="{{note.title_or_placeholder}}" autofocus="autofocus" />
         <label class="checkbox">
             Format as markdown
             <input type="checkbox" name="markdown" {% if note.markdown %}checked="checked"{% endif %} />
