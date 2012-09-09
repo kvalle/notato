@@ -72,3 +72,8 @@ def delete_note(note_id):
     flask.flash('Note was deleted.', 'success')
     return flask.redirect(flask.url_for('index'))
 
+@app.route('/notes/public/<int:note_id>')
+def public_note(note_id):
+    note = g.repo.get(note_id)
+    return flask.render_template('public_note.html', note=note)
+
