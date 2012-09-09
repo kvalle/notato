@@ -12,6 +12,10 @@
             Format as markdown
             <input type="checkbox" name="markdown" {% if note.markdown %}checked="checked"{% endif %} />
         </label>
+        <label class="checkbox">
+            Make this note public
+            <input type="checkbox" name="public" {% if note.public %}checked="checked"{% endif %} />
+        </label>
         <textarea name="note_text" placeholder="Write your note here..." >{{note.text}}</textarea>
 
         <input type="hidden" id="target_state" name="target_state" value="" />

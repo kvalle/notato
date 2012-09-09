@@ -16,6 +16,7 @@ def create_note():
         note.title = form.get('note_title', '').strip()
         note.text = form.get('note_text', '')
         note.markdown = True if form.get('markdown') else False
+        note.public =  True if form.get('public') else False
         g.repo.save(note)
         flask.flash('Created new note.', 'success')
         
@@ -56,6 +57,7 @@ def edit_note(note_id):
         note.title = form.get('note_title', '').strip()
         note.text = form.get('note_text', '')
         note.markdown = True if form.get('markdown') else False
+        note.public =  True if form.get('public') else False
         g.repo.save(note)
         flask.flash('Note was saved.', 'success')
         
@@ -75,5 +77,7 @@ def delete_note(note_id):
 @app.route('/notes/public/<int:note_id>')
 def public_note(note_id):
     note = g.repo.get(note_id)
+    if not note.public:
+        flask.abort(404)
     return flask.render_template('public_note.html', note=note)
 

@@ -26,7 +26,7 @@ class MongoRepo():
         d = self.mongo.notes.find_one({'_id': note_id})
         if not d:
             return None
-        return Note(d['_id'], d['title'], d['text'], d['markdown'])
+        return Note.from_dict(d)
 
     def delete(self, note_id):
         self.mongo.notes.remove({'_id': note_id})
