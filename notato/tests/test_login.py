@@ -23,6 +23,13 @@ class LoginTests(unittest.TestCase, NotatoTestCase):
         self.login()
         response = self.app.get('/notes/edit/10')
         assert "<h1>Edit note</h1>" in response.data
+        
+    def test_logout(self):
+        self.login()
+        response = self.app.get('/log-out', follow_redirects=True)
+        assert "You were logged out" in response.data
+        response = self.app.get('/', follow_redirects=True)
+        assert "You must log in" in response.data
 
 if __name__ == '__main__':
     unittest.main()
