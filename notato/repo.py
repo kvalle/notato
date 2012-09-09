@@ -8,7 +8,7 @@ class MongoRepo():
         self.mongo = con[database]
         
     def get_ids(self):
-        return [n['_id'] for n in self.mongo.notes.find({},{'id':1})]
+        return sorted([n['_id'] for n in self.mongo.notes.find({},{'id':1})])
         
     def get_title_by_id(self, note_id):
         d = self.mongo.notes.find_one({'_id': note_id}, {'title':1})
