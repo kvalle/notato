@@ -4,20 +4,19 @@
 {% block title %}{{ note.title_or_placeholder }}{% endblock %}
 
 {% block content %}
-  <div class="row">
-        <div class="span12">
-            <div class="page-header">
-                <h1>{{note.title_or_placeholder}}</h1>
-            </div>
-            {% if note.markdown %}
-                {% autoescape false %}
-                    {{note.content}}
-                {% endautoescape %}
-            {% else %}
-                <pre class="note">{{note.content}}</pre>
-            {% endif %}
-        </div>
-      </div><!--/row-->
-    </div><!--/container-->
+<div class="row">
+  <div class="span12">
+    <div class="page-header">
+        <h1>{{note.title_or_placeholder}}</h1>
+    </div>
+    {% if note.markdown %}
+        {% autoescape false %}
+            {{note.content}}
+        {% endautoescape %}
+    {% else %}
+        <pre class="note">{{note.content}}</pre>
+    {% endif %}
+  </div>
+</div><!--/row-->
 {% endblock %}
 
