@@ -1,4 +1,5 @@
 #!/usr/bin/env python
 
-from notato import app
-app.run()
+if __name__=='__main__':
+    from notato import app
+    app.run()
