@@ -33,7 +33,7 @@
         </a>
         <a class="brand" href="{{url_for('index')}}">Notato</a>
         <div style="height: auto;" class="nav-collapse in collapse">
-          <ul class="nav">
+          <!--<ul class="nav">
             {% set navigation_bar = [
                   (url_for('notes'), 'notes', 'Notes'),
                   (url_for('about'), 'about', 'About')] -%}
@@ -44,7 +44,7 @@
                 <a href="{{ href|e }}">{{ caption|e }}</a>
               </li>
             {% endfor %}
-          </ul>
+          </ul>-->
           <ul class="nav pull-right">
             <li>
               {% if not session.logged_in %}
