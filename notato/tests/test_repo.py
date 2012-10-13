@@ -19,7 +19,16 @@ class MongoRepoTests(unittest.TestCase, NotatoTestCase):
         for i in ids:
             self.repo.save(Note(i))
         assert ids == self.repo.get_ids()
-        
+    
+    def test_get_public_ids(self):
+        self.repo.save(Note(1, public=True))
+        self.repo.save(Note(2, public=False))
+        self.repo.save(Note(3, public=True))
+        ids = self.repo.get_public_ids()
+        assert 1 in ids
+        assert 2 not in ids
+        assert 3 in ids
+
     def test_save_multiple_notes(self):
         new_ids = range(1,4)
         for i in new_ids:

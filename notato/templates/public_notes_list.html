@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% set active_page = "notes" %}
+
+{% block title %}Public Notes{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="span12">
+    <div class="page-header">
+        <h1>Public Notes</h1>
+    </div>
+    <ul>
+    {% for id in note_ids %}
+        <li>
+            <a href="{{url_for('public_note', note_id=id)}}">{{g.repo.get_title_by_id(id)}}</a>
+        </li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
