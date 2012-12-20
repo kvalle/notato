@@ -30,8 +30,7 @@
           <ul class="nav">
             {% set navigation_bar = [
                   (url_for('notes'), 'notes', 'Notes'),
-                  (url_for('files'), 'files', 'Files'),
-                  (url_for('about'), 'about', 'About')] -%}
+                  (url_for('files'), 'files', 'Files')] -%}
             {% set active_page = active_page|default('notes') -%}
             
             {% for href, id, caption in navigation_bar %}

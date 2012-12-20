@@ -4,10 +4,6 @@ from flask import g
 import notato.auth as auth
 from notato import app
 
-@app.route('/about/')
-def about():
-    return flask.render_template('about.html')
-
 @app.route('/log-in', methods=['GET', 'POST'])
 def login():
     username = ""
