@@ -20,20 +20,20 @@ def upload_file():
     if flask.request.method == 'POST':
         f = flask.request.files['new_file']
         if not f:
-        	flask.flash('No file specified', 'warning')
+            flask.flash('No file specified', 'warning')
         else:
-	        filename = werkzeug.secure_filename(f.filename)
-	        path = app.config['FILES_DIR'] + filename
-	        f.save(path)
-	        flask.flash('Successfully uploaded "%s"' % filename, 'success')
+            filename = werkzeug.secure_filename(f.filename)
+            path = app.config['FILES_DIR'] + filename
+            f.save(path)
+            flask.flash('Successfully uploaded "%s"' % filename, 'success')
     return flask.redirect(flask.url_for('files'))
 
-@app.route('/files/raw/<string:name>')
+@app.route('/files/raw/<string:filename>')
 @requires_auth
-def raw_file(name):
-    path = app.config['FILES_DIR'] + name
+def raw_file(filename):
+    path = app.config['FILES_DIR'] + filename
     if not os.path.exists(path):
-    	flask.abort(404)
+        flask.abort(404)
     with open(path, 'r') as f:
         content = f.read()
-    return flask.Response(content, 200, {'content-type': 'text/plain'})
+    return flask.Response(content, 200, {'content-type': mimetype or 'text/plain'})
