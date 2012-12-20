@@ -16,3 +16,4 @@ def before_request():
 
 from notato.views import general
 from notato.views import notes
+from notato.views import files

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% set active_page = "files" %}
+
+{% block title %}Files{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>New file</h1>
+    </div>
+    <form enctype="multipart/form-data" action="{{ url_for('upload_file') }}" method="POST">
+        <input type="file" name="new_file" />
+        <input class="btn" type="submit" value="Upload" />
+    </form>
+
+    {% if files %}
+    <div class="page-header">
+        <h1>List of files</h1>
+    </div>
+
+    <ul>
+        {% for file in files %}
+        <li>{{file}}</li>
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+
+{% endblock %}
