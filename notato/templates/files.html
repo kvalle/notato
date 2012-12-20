@@ -19,7 +19,10 @@
 
     <ul>
         {% for file in files %}
-        <li><a href="{{url_for('raw_file', filename=file)}}">{{file}}</a></li>
+        <li>
+            <a href="{{url_for('raw_file', filename=file)}}">{{file}}</a>
+            <a href="{{url_for('delete_file', filename=file)}}"><i class="icon-trash"></i></a>
+        </li>
         {% endfor %}
     </ul>
 

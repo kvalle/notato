@@ -39,3 +39,13 @@ def raw_file(filename):
         content = f.read()
     mimetype, _ = mimetypes.guess_type(filename)
     return flask.Response(content, 200, {'content-type': mimetype or 'text/plain'})
+
+@app.route('/files/delete/<string:filename>')
+@requires_auth
+def delete_file(filename):
+    path = app.config['FILES_DIR'] + filename
+    if not os.path.exists(path):
+        flask.abort(404)
+    os.remove(path)
+    flask.flash('Successfully deleted "%s"' % filename, 'success')
+    return flask.redirect(flask.url_for('files'))
