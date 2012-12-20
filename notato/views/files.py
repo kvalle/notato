@@ -1,4 +1,5 @@
 import os, os.path
+import mimetypes
 
 import flask
 from flask import g
@@ -36,4 +37,5 @@ def raw_file(filename):
         flask.abort(404)
     with open(path, 'r') as f:
         content = f.read()
+    mimetype, _ = mimetypes.guess_type(filename)
     return flask.Response(content, 200, {'content-type': mimetype or 'text/plain'})
