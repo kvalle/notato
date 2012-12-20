@@ -5,26 +5,25 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>New file</h1>
+        <h1>Files</h1>
     </div>
+    <h2>New file</h2>
     <form enctype="multipart/form-data" action="{{ url_for('upload_file') }}" method="POST">
         <input type="file" name="new_file" />
         <input class="btn" type="submit" value="Upload" />
     </form>
 
     {% if files %}
-    <div class="page-header">
-        <h1>List of files</h1>
-    </div>
+    <h2>List of files</h2>
 
-    <ul>
+    <table class="table table-hover table-condensed">
         {% for file in files %}
-        <li>
-            <a href="{{url_for('raw_file', filename=file)}}">{{file}}</a>
-            <a href="{{url_for('delete_file', filename=file)}}"><i class="icon-trash"></i></a>
-        </li>
+        <tr>
+            <td><a href="{{url_for('raw_file', filename=file)}}">{{file}}</a></td>
+            <td style="width: 10px;"><a href="{{url_for('delete_file', filename=file)}}"><i class="icon-trash"></i></a></td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
 
     {% endif %}
 
