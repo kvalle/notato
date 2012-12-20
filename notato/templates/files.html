@@ -5,17 +5,19 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Files</h1>
+        <h1>File uploads</h1>
     </div>
-    <h2>New file</h2>
-    <form enctype="multipart/form-data" action="{{ url_for('upload_file') }}" method="POST">
-        <input type="file" name="new_file" />
-        <input class="btn" type="submit" value="Upload" />
-    </form>
+    <a class="btn new-file-button"><i class="icon-file"></i> New file</a>
+    <div class="new-file-form well" style="display: none;">
+        <form enctype="multipart/form-data" action="{{ url_for('upload_file') }}" method="POST">
+            <input id="actual-file-field" type="file" name="new_file" style="display:none" />
+            <input id="fake-file-field" class="input-large" type="text" />
+            <input id="fake-file-button" type="button" class="btn" value="Choose file" />
+            <input class="btn btn-primary" type="submit" value="Upload" />
+        </form>
+    </div>
 
     {% if files %}
-    <h2>List of files</h2>
-
     <table class="table table-hover table-condensed">
         {% for file in files %}
         <tr>
