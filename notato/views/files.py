@@ -9,10 +9,13 @@ from notato.auth import requires_auth
 from notato.models import Note
 from notato import app
 
+ignorefiles = ['.gitignore']
+
 @app.route('/files/', methods=['GET'])
 @requires_auth
 def files():
     files = os.listdir(app.config['FILES_DIR'])
+    files = filter(lambda f: f not in ignorefiles, files)
     return flask.render_template('files.html', files=files)
 
 @app.route('/files/upload/', methods=['GET', 'POST'])
