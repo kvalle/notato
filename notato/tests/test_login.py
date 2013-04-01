@@ -15,14 +15,23 @@ class LoginTests(unittest.TestCase, NotatoTestCase):
         self.login()
         response = self.app.get('/')
         assert 'Log out' in response.data
+
+    def test_login_bad_username(self):
+        response = self.login(user="invalid user")
+        assert "Invalid username or password." in response.data
+
+    def test_login_bad_password(self):
+        response = self.login(password="invalid pwd")
+        assert "Invalid username or password." in response.data
         
     def test_login_redirects_properly(self):
         self.repo.save(Note(10))
         response = self.app.get('/notes/edit/10', follow_redirects=True)
         assert "You must log in" in response.data
-        self.login()
-        response = self.app.get('/notes/edit/10')
-        assert "<h1>Edit note</h1>" in response.data
+        
+        response = self.login()
+        assert response.status_code == 302
+        assert response.location.endswith("/notes/edit/10")
         
     def test_logout(self):
         self.login()
